@@ -2,8 +2,13 @@
 
 .App { 
   min-height: 100vh; 
-  background-color: black; 
+  background-image: 
+    linear-gradient(to right, #3a3b3c 1px, transparent 1px),
+    linear-gradient(to bottom, #3a3b3c 1px, transparent 1px);
+  background-size: 50px 50px; /* Size of the grid squares */
+  background-color: #000000; /* Background color */
 }
+
 
 h1 { 
   font-family: 'Orbitron', sans-serif;
