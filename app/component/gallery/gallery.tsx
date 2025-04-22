@@ -1,41 +1,32 @@
-import './gallery.css'; // Importing CSS for styling the gallery component
-import Pokedex from 'pokedex-promise-v2'; // Importing Pokedex library
-import { useQuery } from '@tanstack/react-query'; // Importing useQuery for data fetching
-import Card from '../card/card'; // Importing Card component to display each Pokémon
-import { Pokemon } from '../../entities/pokemon'; // Importing Pokemon interface for type safety
+import Pokedex from 'pokedex-promise-v2';
+import Card from '../card/card';
+import Pokemon from './../../entities/pokemon';
+import "./gallery.css";
 
-function Gallery() {
-  const p = new Pokedex(); // Initializing Pokedex instance
 
-  const fetchPokemon = async (): Promise<Pokemon[]> => {
-    const pokemonList = await p.getPokemonsList({ limit: 1025 }); // Fetching a list of Pokémon with a limit of 1025
-    console.log(pokemonList.results); 
-    return [...pokemonList.results]; 
-  }
+export default async function Gallery() { 
+  const P = new Pokedex();
 
-  const { data: pokemonList, isLoading } = useQuery({
-    queryKey: ['pokemonList'], // Unique key for the query
-    queryFn: () => fetchPokemon(),
-    staleTime: 1000 * 60 * 60, // Data is fresh for 1 hour
-    refetchOnWindowFocus: false, // Do not refetch on window focus
-  }); 
+  // At the time of development there were only 1025 pokemon in the national dex
+  const response = await P.getPokemonsList({limit: 1025});
+  const pokemons = await response.results as Pokemon[];
 
-  if (isLoading) { 
-    return <div className="loading">Loading...</div>; // Display loading state while fetching data
+  if (!pokemons || pokemons.length === 0) {
+    return <div className="gallery"></div>;
   }
 
   return (
     <div className="gallery">
       {
-        pokemonList?.map((pokemon: Pokemon) => (
-          <Card
-            key={pokemon.name} // Unique key for each card // Pokémon ID
-            pokemon={pokemon.name} // Pokémon name
-          />
-        ))
+        pokemons.map((pokemon, index) => { 
+          return (
+            <Card key = {index}
+                  name={pokemon.name} 
+                  url={pokemon.url} 
+                  imageSource={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}/>
+          ); 
+        })
       }
     </div>
-  );
+  )
 }
-
-export default Gallery;
