@@ -6,13 +6,3 @@
   flex-wrap: wrap; 
   margin: 0; 
 }
-
-.loading { 
-  font-family: 'Orbitron', sans-serif; 
-  color: white; 
-  font-size: 2rem; 
-  position: absolute; 
-  left: 50%; 
-  top: 50%; 
-  transform: translate(-50%, -50%); 
-}
