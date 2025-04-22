@@ -4,9 +4,9 @@ import Info from './info/info';
 
 import './card.css'; 
 
-type CardProps = {imageSource: string, pokemon: string};
+type CardProps = {pokemon: string};
 
-function Card({imageSource, pokemon}: CardProps) { 
+function Card({pokemon}: CardProps) { 
 
   const [showInfo, setShowInfo] = useState(false);
 
