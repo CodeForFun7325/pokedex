@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import SearchBar from "./component/search/searchbar";
-import Gallery from "./component/gallery/gallery";
+import GalleryContainer from "./component/gallery/gallerycontainer";
 import "./page.module.css";
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
       <h1>PokeDex</h1> 
       <SearchBar />
       <Suspense fallback={<div className="loading">Loading...</div>}>
-        <Gallery />
+        <GalleryContainer />
       </Suspense>
     </>
   );
