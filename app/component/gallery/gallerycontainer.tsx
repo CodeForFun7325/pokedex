@@ -13,6 +13,8 @@ export default async function GalleryContainer() {
       return <div className="gallery"></div>;
     }
 
+    console.log("rerednering gallery container"); 
+
     return (
       <Gallery pokemons={pokemons}/>
     );
