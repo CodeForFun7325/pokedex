@@ -1,19 +1,23 @@
 "use client"; 
+
+/// Component Imports
 import React, { useState, useCallback } from "react";
-import Card from '../card/card';
-import Pokemon from './../../entities/pokemon';
+import Info from '../info/info';
+
+/// Hook Imports
+import usePokemonSelect from '../../hooks/usePokemonSelect';
+
+/// CSS Styling
 import "./gallery.css";
 
+/// Entities
+import Card from '../card/card';
+import Pokemon from './../../entities/pokemon';
 
 export default function Gallery({ pokemons }: { pokemons: Pokemon[] }) { 
   
-  const [selectedPokemonUrl, setSelectedPokemonUrl] = useState("");
-  
-  const handlePokemonSelect = useCallback((url: string) => {
-    setSelectedPokemonUrl(url);
-    console.log(`Selected Pokemon URL: ${url}`); // Log the selected Pokemon URL
-  }, []);
-  
+  const { selectedPokemonUrl, showInfo, handlePokemonSelect } = usePokemonSelect();
+
   // Create pokemon cards using the pokemons array passed as a prop
   const PokemonCards =  pokemons.map((pokemon, index) => { 
     return (
@@ -27,7 +31,8 @@ export default function Gallery({ pokemons }: { pokemons: Pokemon[] }) {
   
   return (
     <div className="gallery">
-      {PokemonCards} // Render the pokemon cards
+      {PokemonCards}
+      {showInfo && <Info url={selectedPokemonUrl} handleCloseInfo={handlePokemonSelect} />}
     </div>
   )
 }
