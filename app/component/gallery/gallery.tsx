@@ -2,6 +2,7 @@
 
 /// Component Imports
 import React, { useState, useCallback } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Info from '../info/info';
 
 /// Hook Imports
@@ -13,6 +14,8 @@ import "./gallery.css";
 /// Entities
 import Card from '../card/card';
 import Pokemon from './../../entities/pokemon';
+
+const queryClient = new QueryClient(); 
 
 export default function Gallery({ pokemons }: { pokemons: Pokemon[] }) { 
   
@@ -28,11 +31,18 @@ export default function Gallery({ pokemons }: { pokemons: Pokemon[] }) {
             onClick={handlePokemonSelect}/>
     ); 
   });
+
+  console.log(selectedPokemonUrl); 
   
   return (
     <div className="gallery">
       {PokemonCards}
-      {showInfo && <Info url={selectedPokemonUrl} handleCloseInfo={handlePokemonSelect} />}
+      <QueryClientProvider client={queryClient}>
+        {
+          showInfo && 
+          <Info url={selectedPokemonUrl} handleCloseInfo={handlePokemonSelect} />
+        }
+      </QueryClientProvider>
     </div>
   )
 }

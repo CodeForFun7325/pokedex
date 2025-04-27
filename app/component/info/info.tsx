@@ -1,6 +1,10 @@
 import React from "react"; 
 
-import "./info.css"; // Importing the CSS file for styling
+// Custom Hooks
+import useFetchPokemon from "../../hooks/useFetchPokemon";
+
+/// CSS Styling
+import "./info.css"; 
 
 type infoProps = { 
   url: string;
@@ -9,13 +13,11 @@ type infoProps = {
 
 function Info({ url, handleCloseInfo} : infoProps) 
 {
-  const handleClick = () => { 
-    handleCloseInfo(""); // Close the info by passing an empty string
-  }
+  const { data, isFetching } = useFetchPokemon(url);
 
   return (
     <div className="info-container">
-      <span onClick={handleClick} className="close-btn">&times;</span>
+      <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
       <>
         <h2>Pokemon Name</h2>
         <p>Type 1: </p>
