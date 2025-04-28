@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 export default function useFetchPokemon(url: string) { 
-  const { data, isFetching } = useQuery({
+  const { data } = useQuery({
     queryKey: ['pokemon', url], 
     queryFn: async () => { 
       const response = await fetch(url); 
@@ -15,5 +15,5 @@ export default function useFetchPokemon(url: string) {
     refetchOnWindowFocus: false, // Prevent refetching on window focus
   }); 
 
-  return { data, isFetching }; 
+  return { data }; 
 }

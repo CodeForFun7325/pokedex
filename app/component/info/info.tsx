@@ -13,8 +13,9 @@ type infoProps = {
 
 function Info({ url, handleCloseInfo} : infoProps) 
 {
-  const { data, isFetching } = useFetchPokemon(url);
-
+  const { data } = useFetchPokemon(url);
+  console.log(data); 
+  
   return (
     <div className="info-container">
       <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
