@@ -13,11 +13,11 @@ import "./gallery.css";
 
 /// Entities
 import Card from '../card/card';
-import Pokemon from './../../entities/pokemon';
+import { PokemonListResponse } from './../../entities/pokemon';
 
 const queryClient = new QueryClient(); 
 
-export default function Gallery({ pokemons }: { pokemons: Pokemon[] }) { 
+export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] }) { 
   
   const { selectedPokemonUrl, showInfo, handlePokemonSelect } = usePokemonSelect();
 
