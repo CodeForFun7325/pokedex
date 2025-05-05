@@ -3,7 +3,9 @@ export default interface Pokemon {
   type1: string;
   type2: string; 
   id: number; 
+  abilities: string[];
   moves: string[];
+  sprites: {};
 }
 
 export interface PokemonListResponse {

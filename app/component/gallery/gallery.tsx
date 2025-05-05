@@ -31,8 +31,6 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
             onClick={handlePokemonSelect}/>
     ); 
   });
-
-  console.log(selectedPokemonUrl); 
   
   return (
     <div className="gallery">

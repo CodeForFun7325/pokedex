@@ -10,7 +10,6 @@ export default async function GalleryContainer() {
 
   // At the time of development there were only 1025 pokemon in the national dex
   const response = await P.getPokemonsList({limit: 1025});
-  console.log("response", response); 
   const pokemons = await response.results as PokemonListResponse[];
 
   if (!pokemons || pokemons.length === 0) {
