@@ -60,7 +60,16 @@ function Info({ url, handleCloseInfo} : infoProps)
         </ul>
         <br />
         
-        <p><strong>Moves:</strong> {p?.moves.join(",")}</p>
+        <p><strong>Moves:</strong></p>
+        <ul className="moves"> 
+          {
+            p?.moves.map((value, index) => { 
+              return(
+                <li key={index}>{value}</li>
+              ); 
+            })
+          }
+        </ul>
       </div>
     </div>
   );

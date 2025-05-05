@@ -40,8 +40,9 @@
 .pokemon-info { 
   width: 60%; 
   line-height: 1.5rem;
+  overflow-y: scroll;
 }
 
-.abilities {
+.abilities, .moves {
   list-style:inside;
 }
