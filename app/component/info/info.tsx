@@ -27,7 +27,7 @@ function Info({ url, handleCloseInfo} : infoProps)
     return (
       <div className="info-container">
         <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
-        <p className="loading-text">Loading...</p>
+        <p className="loading-text">Retrieving Data...</p>
       </div>
     );
   } 

@@ -34,13 +34,18 @@
 .carousel-button { 
   position: absolute; 
   z-index: 2; 
-  background: none; 
   border: none; 
   font-size: 2rem; 
   top: 50%; 
   transform: translateY(-50%);
   color: white; 
   cursor: pointer; 
+  background-color: rgba(255, 255, 255, .3); 
+}
+
+.carousel-button:hover, 
+.carousel-button:focus { 
+  background-color: rgba(255, 255, 255, .8); 
 }
 
 .carousel-button.prev { 
