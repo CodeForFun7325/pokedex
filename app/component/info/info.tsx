@@ -32,6 +32,8 @@ function Info({ url, handleCloseInfo} : infoProps)
     );
   } 
 
+  console.log(p?.abilities); 
+
   return (
     <div className="info-container">
       <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
@@ -40,10 +42,25 @@ function Info({ url, handleCloseInfo} : infoProps)
       </div>
       <div aria-label={`Informaiton on ${p?.name}`} className="pokemon-info">
         <h2>{p?.name}</h2>
-        <p>Type 1: {p?.type1}</p>
-        <p>Type 2: {p?.type2}</p>
-        <p>Abilities: {p?.abilities.join(", ")}</p>
-        <p>Moves: {p?.moves}</p>
+        <br />
+
+        <p><strong>Types:</strong> {p?.type1}, {p?.type2}</p>
+        <br />
+
+        <p><strong>Abilities:</strong></p>
+        <ul className="abilities"> 
+          {
+            p?.abilities.map((value, index) => { 
+              console.log(value); 
+              return(
+                <li key={index}>{value}</li>
+              ); 
+            })
+          }
+        </ul>
+        <br />
+        
+        <p><strong>Moves:</strong> {p?.moves.join(",")}</p>
       </div>
     </div>
   );

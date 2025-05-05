@@ -10,9 +10,10 @@
   display: block; 
   opacity: 0.98; 
   border: 2px solid #141414;
-  padding: 1rem; 
+  padding: 2rem; 
   display: flex; 
   flex-direction: row; 
+  justify-content: space-around;
 }
 
 .info-container > * { 
@@ -34,4 +35,13 @@
   left: 50%; 
   transform: translate(-50%, -50%); 
   font-size: 2rem; 
+}
+
+.pokemon-info { 
+  width: 60%; 
+  line-height: 1.5rem;
+}
+
+.abilities {
+  list-style:inside;
 }
