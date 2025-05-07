@@ -41,10 +41,10 @@ function Info({ url, handleCloseInfo} : infoProps)
         <ImageCarousel sprites={p?.sprites || {}} />
       </div>
       <div aria-label={`Informaiton on ${p?.name}`} className="pokemon-info">
-        <h2>{p?.name}</h2>
+        <h2>{p?.name.toUpperCase()}</h2>
         <br />
 
-        <p><strong>Types:</strong> {p?.type1}, {p?.type2}</p>
+        <p><strong>Types: </strong>  {p?.type1}{p?.type2 == "" ? "" : ", "}{p?.type2}</p>
         <br />
 
         <p><strong>Abilities:</strong></p>
