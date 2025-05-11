@@ -22,12 +22,15 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
   const { selectedPokemonUrl, showInfo, handlePokemonSelect } = usePokemonSelect();
 
   // Create pokemon cards using the pokemons array passed as a prop
-  const PokemonCards =  pokemons.map((pokemon, index) => { 
+  const PokemonCards =  pokemons.map((pokemon) => { 
+    const urlComponent = pokemon.url.split("/");
+    const index = urlComponent[urlComponent.length - 2];
+
     return (
       <Card key = {index}
             name={pokemon.name} 
             url={pokemon.url} 
-            imageSource={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
+            imageSource={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`}
             onClick={handlePokemonSelect}/>
     ); 
   });

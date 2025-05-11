@@ -32,8 +32,6 @@ function Info({ url, handleCloseInfo} : infoProps)
     );
   } 
 
-  console.log(p?.abilities); 
-
   return (
     <div className="info-container">
       <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
@@ -51,7 +49,6 @@ function Info({ url, handleCloseInfo} : infoProps)
         <ul className="abilities"> 
           {
             p?.abilities.map((value, index) => { 
-              console.log(value); 
               return(
                 <li key={index}>{value}</li>
               ); 

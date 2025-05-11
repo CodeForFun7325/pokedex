@@ -10,7 +10,6 @@ export default function ImageCarousel({ sprites }: { sprites: {} }) {
   let spriteImages = Object.entries(sprites)
     .filter(([_, value]) => typeof value === "string")
     .map(([key, value], index) => {
-      console.log(value); 
       return (
         <li className={index == activeSlideIndex ? "slide show" : "slide"} key={key}> 
           <img src={value as string} alt={key} className="sprite-image" />
