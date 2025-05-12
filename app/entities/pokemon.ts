@@ -4,6 +4,7 @@ export default interface Pokemon {
   type2: string; 
   id: number; 
   abilities: string[];
+  stats: {}[];
   moves: string[];
   sprites: {};
 }

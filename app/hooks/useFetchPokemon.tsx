@@ -1,6 +1,7 @@
 "use client"; 
 import { useQuery } from '@tanstack/react-query';
 import Pokemon from '../entities/pokemon';
+import { Stats } from 'fs';
 
 export default function useFetchPokemon(url: string) { 
 
@@ -26,6 +27,7 @@ export default function useFetchPokemon(url: string) {
     type2: data?.types[1]?.type?.name || '', 
     abilities: data?.abilities.map((ability: any) => ability.ability.name) || [],
     id: data?.id || 0, 
+    stats: data?.stats || [],
     moves: data?.moves.map((move: any) => move.move.name) || [],
     sprites: data?.sprites.other["official-artwork"] || {}
   }

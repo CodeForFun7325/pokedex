@@ -1,5 +1,6 @@
 import React, { useEffect } from "react"; 
-import ImageCarousel from "./imagecarousel";
+import ImageCarousel from "./imagecarousel"
+import StatsGraph from "./statgraph";
 
 // Custom Hooks
 import useFetchPokemon from "../../hooks/useFetchPokemon";
@@ -14,6 +15,7 @@ type infoProps = {
 
 // Entities
 import Pokemon from "../../entities/pokemon";
+import Stats from "@/app/entities/stats";
 
 function Info({ url, handleCloseInfo} : infoProps) 
 {
@@ -30,7 +32,18 @@ function Info({ url, handleCloseInfo} : infoProps)
         <p className="loading-text">Retrieving Data...</p>
       </div>
     );
-  } 
+  }
+
+  console.log(p); 
+
+  const PokemonStats = p?.stats.map((stat : any) => { 
+    const pokemonStat : Stats = { 
+      "base_stat": stat.base_stat,  
+      "stat": stat.stat.name
+    }
+    
+    return pokemonStat; 
+  }); 
 
   // If data is returned show info card
   return (
@@ -39,8 +52,9 @@ function Info({ url, handleCloseInfo} : infoProps)
       <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
 
       {/* Image carousel */}
-      <div aria-label={`Images of ${p?.name}`} className="image-carousel-container"> 
+      <div aria-label={`Images of ${p?.name}`} className="pokemon-attributes"> 
         <ImageCarousel sprites={p?.sprites || {}} />
+        <StatsGraph stats={PokemonStats || []}/>
       </div>
 
       {/* Information section of card */}

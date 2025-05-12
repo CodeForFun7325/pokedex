@@ -38,11 +38,18 @@
 }
 
 .pokemon-info { 
-  width: 60%; 
+  width: 50%; 
   line-height: 1.5rem;
   overflow-y: scroll;
 }
 
 .abilities, .moves {
   list-style:inside;
+}
+
+.pokemon-attributes { 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-around;
+  align-items: center;
 }

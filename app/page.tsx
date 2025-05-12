@@ -5,7 +5,7 @@ import "./page.module.css";
 
 
 export default function Home({ searchParams }: { searchParams : { [key: string]: string | ""}}) {
-  const searchQuery = searchParams.search;
+  const searchQuery = searchParams.search || "";
 
   return (
     <>
