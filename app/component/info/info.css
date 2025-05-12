@@ -53,3 +53,19 @@
   justify-content: space-around;
   align-items: center;
 }
+
+.report-btn { 
+  font: inherit; 
+  padding: 0rem 0.25rem; 
+  border: 2px solid white; 
+  background-color: black;
+}
+
+.report-btn:hover { 
+  background-color: white; 
+  color: black; 
+}
+
+h2 { 
+  margin-bottom: 1rem; 
+} 

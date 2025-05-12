@@ -1,5 +1,6 @@
-import React, { useEffect } from "react"; 
-import ImageCarousel from "./imagecarousel"
+"use client"; 
+import Link from "next/link";
+import ImageCarousel from "./imagecarousel";
 import StatsGraph from "./statgraph";
 
 // Custom Hooks
@@ -59,7 +60,10 @@ function Info({ url, handleCloseInfo} : infoProps)
 
       {/* Information section of card */}
       <div aria-label={`Information on ${p?.name}`} className="pokemon-info">
-        <h2>{p?.name.toUpperCase()}</h2>
+        <div>
+          <h2>{p?.name.toUpperCase()}</h2>
+          <Link className="report-btn" href="/">Report Citing</Link>
+        </div>
         <br />
 
         <p><strong>Types: </strong>  {p?.type1}{p?.type2 == "" ? "" : ", "}{p?.type2}</p>
