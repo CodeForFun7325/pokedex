@@ -32,13 +32,19 @@ function Info({ url, handleCloseInfo} : infoProps)
     );
   } 
 
+  // If data is returned show info card
   return (
     <div className="info-container">
+      {/* Close button */}
       <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
+
+      {/* Image carousel */}
       <div aria-label={`Images of ${p?.name}`} className="image-carousel-container"> 
         <ImageCarousel sprites={p?.sprites || {}} />
       </div>
-      <div aria-label={`Informaiton on ${p?.name}`} className="pokemon-info">
+
+      {/* Information section of card */}
+      <div aria-label={`Information on ${p?.name}`} className="pokemon-info">
         <h2>{p?.name.toUpperCase()}</h2>
         <br />
 
@@ -55,6 +61,7 @@ function Info({ url, handleCloseInfo} : infoProps)
             })
           }
         </ul>
+
         <br />
         
         <p><strong>Moves:</strong></p>
