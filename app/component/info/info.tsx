@@ -62,7 +62,7 @@ function Info({ url, handleCloseInfo} : infoProps)
       <div aria-label={`Information on ${p?.name}`} className="pokemon-info">
         <div>
           <h2>{p?.name.toUpperCase()}</h2>
-          <Link className="report-btn" href="/">Report Citing</Link>
+          <Link className="report-btn" href="/report">Report Citing</Link>
         </div>
         <br />
 

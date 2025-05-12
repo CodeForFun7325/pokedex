@@ -1,0 +1,11 @@
+* { 
+  color: white; 
+  font-family: 'Orbitron', sans-serif; 
+}
+
+.report-form { 
+  height: 80vh; 
+  width: 80vw;
+  margin: auto; 
+  padding: 2rem;  
+}
