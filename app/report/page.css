@@ -4,8 +4,29 @@
 }
 
 .report-form { 
-  height: 80vh; 
-  width: 80vw;
   margin: auto; 
   padding: 2rem;  
+  display: flex; 
+  flex-direction: row;
+  justify-content: center;
+}
+
+.image-upload { 
+  display: flex; 
+  flex-direction: column; 
+}
+
+.image-upload, .pokemon-details { 
+  width: 30vw; 
+  height: 80vh; 
+}
+
+#imagePreview { 
+  width: 300px; 
+  margin-top: 20px;
+  margin-bottom: 20px; 
+}
+
+.pokemon-details > input { 
+  color: black; 
 }
