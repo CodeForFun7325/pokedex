@@ -33,15 +33,33 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   // Updates the state of checked moves, abilities, and types
   // The functions check if the maximum number of types or abilities has been reached
   const handleTypeCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-    
+    if (e.target.checked) {
+      if (checkedTypes.length < maxTypes) {
+        setCheckedTypes([...checkedTypes, e.target.value]);
+      } else {
+        e.target.checked = false; // Uncheck the checkbox
+        alert(`You can only select up to ${maxTypes} types.`);
+      }
+    }
   }; 
 
   const handleAbilitiiesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-
+    if (e.target.checked) {
+      if (checkedAbilities.length < maxAbilities) {
+        setCheckedAbilities([...checkedAbilities, e.target.value]);
+      } else {
+        e.target.checked = false; // Uncheck the checkbox
+        alert(`You can only select up to ${maxAbilities} abilities.`);
+      }
+    }
   }
 
   const handleMovesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-
+    if (e.target.checked) {
+      setCheckedMoves([...checkedMoves, e.target.value]);
+    } else {
+      setCheckedMoves(checkedMoves.filter((move) => move !== e.target.value));
+    }
   }
 
   // Sort the moves, abilities, and types alphabetically
@@ -50,7 +68,7 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   types = types.map((type) => {
     return (
       <div className="type-option" key={type.name}>
-        <input type="checkbox" name={type.name} value={type.name}/>
+        <input type="checkbox" name={type.name} value={type.name} onChange={handleTypeCheck}/>
         <label className="checkbox-label" htmlFor={type.name}>{type.name}</label>
         <br />
       </div>
@@ -61,7 +79,7 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   abilities = abilities.map((ability) => {
     return (
       <div className="ability-option" key={ability.name}>
-        <input type="checkbox" name={ability.name} value={ability.name}/>
+        <input type="checkbox" name={ability.name} value={ability.name} onChange={handleAbilitiiesCheck}/>
         <label className="checkbox-label" htmlFor={ability.name}>{ability.name}</label>
         <br />
       </div>
@@ -72,7 +90,7 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   moves = moves.map((move) => {
     return (
       <div className="move-option" key={move.name}>
-        <input type="checkbox" name={move.name} value={move.name}/>
+        <input type="checkbox" name={move.name} value={move.name} onChange={handleMovesCheck}/>
         <label className="checkbox-label" htmlFor={move.name}>{move.name}</label>
         <br />
       </div>
