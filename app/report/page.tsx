@@ -1,45 +1,26 @@
-"use client"; 
+import PokemonForm from "./components/pokemonform/pokemonform";
+import Pokedex from "pokedex-promise-v2";
 
-import React, { useState } from "react";
+export default async function ReportCiting() { 
 
-import "./page.css"; 
+  const P = new Pokedex();
 
-export default function ReportCiting() { 
-  const [image, setImage] = useState<string | null>(null); 
+  const movesRequest = await P.getMovesList(); 
+  let moves = await movesRequest.results; 
 
-  const setImageOnChange = (e : React.ChangeEvent<HTMLInputElement>) => { 
-    const file = e.target.files?.[0]; 
+  const abilitiesRequest = await P.getAbilitiesList();
+  let abilities = await abilitiesRequest.results;
 
-    if (file) { 
-      const reader = new FileReader(); 
-      reader.onloadend = () => setImage(reader.result as string); 
-      reader.readAsDataURL(file); 
-    }
-  }
+  const typesRequest = await P.getTypesList(); 
+  let types = await typesRequest.results;
+
+  if (!moves || !abilities || !types)
+    return <h1>Loading...</h1>
 
   return (
     <>
-      <h1>Report Pokemon Citing</h1>
-      <div className="report-form">
-
-        {/* Image Upload Section */}
-        <form className="image-upload">
-          <h2>Image</h2>
-          <br />
-          {image && <img src={image} alt="Uploaded image preview" id="imagePreview" />}
-          <input type="file" id="imageUpload" accept="image/*" onChange={setImageOnChange}/>
-        </form>
-
-        <br />
-
-        {/* Pokemon Details */}
-        <form className="pokemon-details"> 
-          <h2>Pokemon Details</h2>
-          <br />
-          <label htmlFor="name">Pokemon: </label>
-          <input id="name" type="text" name="name"/>
-        </form> 
-      </div>
+      <h1>Report Pokemon Sighting</h1>
+      <PokemonForm moves={moves} abilities={abilities} types={types}/>
     </>
   ); 
 }

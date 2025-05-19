@@ -1,0 +1,56 @@
+* { 
+  color: white; 
+  font-family: 'Orbitron', sans-serif; 
+}
+
+.report-form { 
+  margin: auto; 
+  padding: 2rem;  
+  display: flex; 
+  flex-direction: row;
+  justify-content: center;
+}
+
+.image-upload { 
+  display: flex; 
+  flex-direction: column; 
+}
+
+.image-upload, .pokemon-details { 
+  width: 30vw; 
+  height: 80vh; 
+}
+
+#imagePreview { 
+  width: 400px; 
+  margin-top: 20px;
+  margin-bottom: 20px; 
+}
+
+.pokemon-details > input, .pokemon-details > label { 
+  color: white; 
+  margin: 0.5rem 0; 
+}
+
+.checkbox-label{ 
+  margin-left: .5rem;
+}
+
+.types-list { 
+  display: flex;
+  flex-direction: row; 
+  flex-wrap: wrap; 
+  margin: 0.5rem 0; 
+}
+
+.type-option { 
+  width: 30%; 
+  margin: 0.1rem 0; 
+}
+
+.moves-list, .abilities-list { 
+  height: 300px;
+  width: 100%; 
+  overflow-y: scroll; 
+  margin: 0.5rem 0; 
+}

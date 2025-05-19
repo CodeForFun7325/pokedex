@@ -35,8 +35,6 @@ function Info({ url, handleCloseInfo} : infoProps)
     );
   }
 
-  console.log(p); 
-
   const PokemonStats = p?.stats.map((stat : any) => { 
     const pokemonStat : Stats = { 
       "base_stat": stat.base_stat,  
@@ -62,7 +60,7 @@ function Info({ url, handleCloseInfo} : infoProps)
       <div aria-label={`Information on ${p?.name}`} className="pokemon-info">
         <div>
           <h2>{p?.name.toUpperCase()}</h2>
-          <Link className="report-btn" href={`/report?pokemon=${p?.name}`}>Report Citing</Link>
+          <Link className="report-btn" href={`/report?pokemon=${p?.name}`}>Report Sighting</Link>
         </div>
         <br />
 
