@@ -14,6 +14,7 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   const [checkedAbilities, setCheckedAbilities] = useState<string[]>([]); // Array of selected abilities
   const [checkedTypes, setCheckedTypes] = useState<string[]>([]); // Array of selected types
 
+  // Sets the image state when a file is selected
   const setImageOnChange = (e : React.ChangeEvent<HTMLInputElement>) => { 
     const file = e.target.files?.[0]; 
 
@@ -24,9 +25,27 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
     }
   }
 
+  // Capitalizes the first letter of the pokemon name from the search params
   let pokemonName : string | null = searchParams.get('pokemon');
   pokemonName = pokemonName ? pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1) : ""; 
 
+  // Handles the change event for the checkboxes
+  // Updates the state of checked moves, abilities, and types
+  // The functions check if the maximum number of types or abilities has been reached
+  const handleTypeCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
+    
+  }; 
+
+  const handleAbilitiiesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
+
+  }
+
+  const handleMovesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
+
+  }
+
+  // Sort the moves, abilities, and types alphabetically
+  // Map the moves, abilities, and types to create a list of checkboxes
   types.sort((typeA, typeB) => typeA.name.localeCompare(typeB.name));
   types = types.map((type) => {
     return (
@@ -59,18 +78,6 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
       </div>
     );
   });
-
-  const handleTypeCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-
-  }; 
-
-  const handleAbilitiiesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-
-  }
-
-  const handleMovesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-
-  }
 
   return (
     <div className="report-form">
