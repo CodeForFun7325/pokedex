@@ -33,13 +33,15 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   // Updates the state of checked moves, abilities, and types
   // The functions check if the maximum number of types or abilities has been reached
   const handleTypeCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      if (checkedTypes.length < maxTypes) {
+    if (e.target.checked) {                                 // if we are checking the checkbox
+      if (checkedTypes.length < maxTypes) {                 // chec if the max types has been reached
         setCheckedTypes([...checkedTypes, e.target.value]);
       } else {
         e.target.checked = false; // Uncheck the checkbox
         alert(`You can only select up to ${maxTypes} types.`);
       }
+    } else { // we are unchecking the checkbox and removing the type from the checked types
+      setCheckedTypes(checkedTypes.filter((type) => type !== e.target.value)); 
     }
   }; 
 
@@ -51,6 +53,8 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
         e.target.checked = false; // Uncheck the checkbox
         alert(`You can only select up to ${maxAbilities} abilities.`);
       }
+    } else { 
+      setCheckedAbilities(checkedAbilities.filter((ability) => ability !== e.target.value));
     }
   }
 
@@ -105,6 +109,8 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
         <br />
         {image && <img src={image} alt="Uploaded image preview" id="imagePreview" />}
         <input type="file" id="imageUpload" accept="image/*" onChange={setImageOnChange}/>
+
+        <button className="upload-button">Upload Pokemon</button>
       </form>
 
       <br />
