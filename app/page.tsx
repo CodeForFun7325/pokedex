@@ -9,8 +9,6 @@ export default async function Home({ searchParams }: { searchParams : { [key: st
 
   const searchQuery = searchParams.search || "";
 
-  
-
   return (
     <>
       <h1>PokeDex</h1>
