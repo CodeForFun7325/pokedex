@@ -1,5 +1,7 @@
 "use server"; 
 
-export default function PostPokemonSighting(request: Request) {
-
+export default function PostPokemonSighting({ moves, abilities, types } : 
+  { moves: string[], abilities: string[], types: string[] }) {
+  
+    
 }

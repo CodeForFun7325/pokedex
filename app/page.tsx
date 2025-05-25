@@ -1,11 +1,15 @@
 import { Suspense } from "react";
+import { DefaultAzureCredential } from "@azure/identity";
 import SearchBar from "./component/search/searchbar";
 import GalleryContainer from "./component/gallery/gallerycontainer";
 import "./page.module.css";
 
 
-export default function Home({ searchParams }: { searchParams : { [key: string]: string | ""}}) {
+export default async function Home({ searchParams }: { searchParams : { [key: string]: string | ""}}) {
+
   const searchQuery = searchParams.search || "";
+
+  
 
   return (
     <>
