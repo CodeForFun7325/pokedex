@@ -39,3 +39,23 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Terraform state files
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+
+# Terraform plan files
+*.tfplan
+
+# Terraform lock file (used by Terraform 0.14+)
+.terraform.lock.hcl
+
+# Terraform modules cache
+.terraform/
+
+# Optional: Files generated for local overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
