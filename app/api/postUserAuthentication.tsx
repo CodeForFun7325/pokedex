@@ -13,5 +13,6 @@ export default async function PostUserAuthentication() {
   // Add the pokemon form into the database if it does not already exist
   cosmosClient.database("pokemon").container("pokemon");
 
+  
   // Update an existing item
 }

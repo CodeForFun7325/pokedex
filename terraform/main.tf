@@ -54,11 +54,11 @@ resource "azurerm_resource_group" "pokedex" {
 # }
 
 resource "azurerm_cosmosdb_account" "pokedex_db_account" {
-  name                      = "pokedex-db-account"
-  resource_group_name       = azurerm_resource_group.pokedex.name
-  location                  = azurerm_resource_group.pokedex.location
-  offer_type                = "Standard"
-  kind                      = "GlobalDocumentDB"
+  name                = "pokedex-db-account"
+  resource_group_name = azurerm_resource_group.pokedex.name
+  location            = azurerm_resource_group.pokedex.location
+  offer_type          = "Standard"
+  kind                = "GlobalDocumentDB"
 
   consistency_policy {
     consistency_level = "Eventual"
@@ -82,6 +82,15 @@ resource "azurerm_cosmosdb_sql_container" "pokemon_container" {
   resource_group_name = azurerm_cosmosdb_account.pokedex_db_account.resource_group_name
   account_name        = azurerm_cosmosdb_account.pokedex_db_account.name
   database_name       = azurerm_cosmosdb_sql_database.pokedex_db.name
-  partition_key_path  = "/pokemonName/pokemonForm"
-  throughput          = 400
+  partition_key_paths = ["/pokemon/pokemonName"]
+
+  indexing_policy {
+    indexing_mode = "consistent"
+
+    included_path {
+      path = "/pokemonForm"
+    }
+  }
+
+  throughput = 400
 }
