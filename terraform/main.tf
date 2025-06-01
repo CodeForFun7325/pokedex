@@ -60,6 +60,8 @@ resource "azurerm_cosmosdb_account" "pokedex_db_account" {
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
 
+  local_authentication_disabled = true
+
   consistency_policy {
     consistency_level = "Eventual"
   }
@@ -77,19 +79,26 @@ resource "azurerm_cosmosdb_sql_database" "pokedex_db" {
   throughput          = 400
 }
 
-resource "azurerm_cosmosdb_sql_container" "pokemon_container" {
-  name                = "pokemon-container"
-  resource_group_name = azurerm_cosmosdb_account.pokedex_db_account.resource_group_name
-  account_name        = azurerm_cosmosdb_account.pokedex_db_account.name
-  database_name       = azurerm_cosmosdb_sql_database.pokedex_db.name
-  partition_key_paths = ["/pokemon/pokemonName"]
+resource "azurerm_cosmosdb_sql_container" "pokemon_sightings" {
+  name                  = "Sightings"
+  resource_group_name   = azurerm_cosmosdb_account.pokedex_db_account.resource_group_name
+  account_name          = azurerm_cosmosdb_account.pokedex_db_account.name
+  database_name         = azurerm_cosmosdb_sql_database.pokedex_db.name
+  partition_key_paths   = ["/pokemonName", "/pokemonForm"]
+  partition_key_kind    = "MultiHash"
+  partition_key_version = 2
 
   indexing_policy {
     indexing_mode = "consistent"
 
     included_path {
-      path = "/pokemonForm"
+      path = "/*"
     }
+
+    excluded_path {
+      path = "/\"_etag\"/?"
+    }
+
   }
 
   throughput = 400

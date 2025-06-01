@@ -2,6 +2,9 @@
 import React, { useState } from 'react'; 
 import { useSearchParams } from 'next/navigation';
 
+import PostPokemonSighting from '@/app/api/postPokemonSighting';
+import Pokemon from '@/app/entities/pokemon';
+
 import './pokemonform.css';
 
 export default function PokemonForm({moves, abilities, types} : {moves: any[], abilities: any[], types: any[]}) { 
@@ -9,10 +12,11 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   const maxAbilities = 1; // A pokemon can have a maximum of 1 ability
 
   const searchParams = useSearchParams();
+  const [form, setForm ] = useState<string>(""); 
   const [image, setImage] = useState<string | null>(null); 
   const [checkedMoves, setCheckedMoves] = useState<string[]>([]); // Array of selected moves
-  const [checkedAbilities, setCheckedAbilities] = useState<string[]>([]); // Array of selected abilities
   const [checkedTypes, setCheckedTypes] = useState<string[]>([]); // Array of selected types
+  const [checkedAbilities, setCheckedAbilities] = useState<string>(""); // Array of selected abilities
 
   // Sets the image state when a file is selected
   const setImageOnChange = (e : React.ChangeEvent<HTMLInputElement>) => { 
@@ -29,9 +33,12 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   let pokemonName : string | null = searchParams.get('pokemon');
   pokemonName = pokemonName ? pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1) : ""; 
 
+  let pokemonIdString : string | null = searchParams.get('id');
+  let pokemonId : number = pokemonIdString ? parseInt(pokemonIdString) : 0; // Parse the pokemon ID from the search params
+
   // Handles the change event for the checkboxes
-  // Updates the state of checked moves, abilities, and types
   // The functions check if the maximum number of types or abilities has been reached
+  // Updates the state of checked moves, abilities, and types, and pokemon form
   const handleTypeCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {                                 // if we are checking the checkbox
       if (checkedTypes.length < maxTypes) {                 // chec if the max types has been reached
@@ -47,14 +54,14 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
 
   const handleAbilitiiesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      if (checkedAbilities.length < maxAbilities) {
-        setCheckedAbilities([...checkedAbilities, e.target.value]);
+      if (checkedAbilities == "") { // If an ability has not been selected yet
+        setCheckedAbilities(e.target.value);
       } else {
         e.target.checked = false; // Uncheck the checkbox
         alert(`You can only select up to ${maxAbilities} abilities.`);
       }
     } else { 
-      setCheckedAbilities(checkedAbilities.filter((ability) => ability !== e.target.value));
+      setCheckedAbilities(""); 
     }
   }
 
@@ -64,6 +71,10 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
     } else {
       setCheckedMoves(checkedMoves.filter((move) => move !== e.target.value));
     }
+  }
+
+  const handleFormChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setForm(e.target.value); // Update the form state with the input value;
   }
 
   // Sort the moves, abilities, and types alphabetically
@@ -101,45 +112,64 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
     );
   });
 
+  // When the upload button is clicked, we call the PostPokemonSighting function
+  // with the selected types, id, pokemon name, form, abilities, moves, and an empty sprites object
+  const handleUploadClick = () => { 
+    const pokemonObject : Pokemon = { 
+      name: pokemonName, 
+      type1: checkedTypes.length > 0 ? checkedTypes[0] : "", 
+      type2: checkedTypes.length > 1 ? checkedTypes[1] : "",
+      form: form, 
+      id: pokemonId, 
+      abilities: [checkedAbilities], 
+      stats: [], 
+      moves: checkedMoves, 
+      sprites: {}
+    }
+
+    PostPokemonSighting(pokemonObject);
+  }
+
   return (
-    <div className="report-form">
-      {/* Image Upload Section */}
-      <form className="image-upload">
-        <h2>{pokemonName} Image</h2>
-        <br />
-        {image && <img src={image} alt="Uploaded image preview" id="imagePreview" />}
-        <input type="file" id="imageUpload" accept="image/*" onChange={setImageOnChange}/>
+    <>
+      <div className="report-form">
+        {/* Image Upload Section */}
+        <form className="image-upload">
+          <h2>{pokemonName} Image</h2>
+          <br />
+          {image && <img src={image} alt="Uploaded image preview" id="imagePreview" />}
+          <input type="file" id="imageUpload" accept="image/*" onChange={setImageOnChange}/>
+        </form>
 
-        <button className="upload-button">Upload Pokemon</button>
-      </form>
-
-      <br />
-
-      {/* Pokemon Details */}
-      <form className="pokemon-details"> 
-        <h2>{pokemonName} Details</h2>
         <br />
 
-        <label htmlFor="form">Form: </label>
-        <input id="form" type="text" name="form"/>
-        <br /> 
-        
-        <label>Types: </label>
-        <div className="types-list">
-          {types}
-        </div>
-        <br />
+        {/* Pokemon Details */}
+        <form className="pokemon-details"> 
+          <h2>{pokemonName} Details</h2>
+          <br />
 
-        <label>Abilities: </label>
-        <div className="abilities-list">
-          {abilities}
-        </div>
+          <label htmlFor="form">Form: </label>
+          <input id="form" type="text" name="form" onChange={handleFormChange}/>
+          <br /> 
+          
+          <label>Types: </label>
+          <div className="types-list">
+            {types}
+          </div>
+          <br />
 
-        <label>Moves:</label>
-        <div className="moves-list">
-          {moves}
-        </div>
-      </form> 
-    </div>
+          <label>Abilities: </label>
+          <div className="abilities-list">
+            {abilities}
+          </div>
+
+          <label>Moves:</label>
+          <div className="moves-list">
+            {moves}
+          </div>
+        </form> 
+      </div>
+      <button className="upload-button" onClick={handleUploadClick}>Upload Data</button>
+    </>
   );
 }

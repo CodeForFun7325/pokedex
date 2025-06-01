@@ -22,7 +22,7 @@ function Info({ url, handleCloseInfo} : infoProps)
 {
 
   const data = useFetchPokemon(url);
-  const p : Pokemon | null = data == null ? null : data.p;
+  const p : Pokemon | undefined = data?.p;
 
   /// If no data is returned, show loading text
   /// This is to prevent the main component from rendering before the data is successfully fetched
@@ -60,7 +60,7 @@ function Info({ url, handleCloseInfo} : infoProps)
       <div aria-label={`Information on ${p?.name}`} className="pokemon-info">
         <div>
           <h2>{p?.name.toUpperCase()}</h2>
-          <Link className="report-btn" href={`/report?pokemon=${p?.name}`}>Report Sighting</Link>
+          <Link className="report-btn" href={`/report?pokemon=${p?.name}&id=${p?.id}`}>Report Sighting</Link>
         </div>
         <br />
 
