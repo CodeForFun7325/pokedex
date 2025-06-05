@@ -1,5 +1,5 @@
 "use client"; 
-import React, { useState } from 'react'; 
+import React, { useCallback, useState } from 'react'; 
 import { useSearchParams } from 'next/navigation';
 
 import PostPokemonSighting from '@/app/api/postPokemonSighting';
@@ -73,9 +73,9 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
     }
   }
 
-  const handleFormChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const handleFormChange = useCallback((e : React.ChangeEvent<HTMLInputElement>) => {
     setForm(e.target.value); // Update the form state with the input value;
-  }
+  }, [])
 
   // Sort the moves, abilities, and types alphabetically
   // Map the moves, abilities, and types to create a list of checkboxes

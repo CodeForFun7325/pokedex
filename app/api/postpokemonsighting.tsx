@@ -43,10 +43,11 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
 
   // Parse out the json object returned from the query
   const sightingInformation = sightings.resources;
+  const sighting = sightingInformation[0];
   
-  // If the query returned no results, we can assume that then the pokemon sighting does not exist
+  // If the query returned no results, we can assume that the pokemon sighting does not exist
   // yet and we should create a new item in the container with the passed in information
-  if (!sightingInformation) { 
+  if (!sighting) { 
     sightingsContainer.items.create({
       pokemonId: pokemonObject.id,
       pokemonName: pokemonObject.name,
@@ -59,10 +60,8 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
   } else { 
     // If the query returned results, we can assume that the pokemon sighting already exists
     // and we should update the existing item with the new information
-    const sighting = sightingInformation[0];
-    
     // Update the existing item with the new information
-    sightingsContainer.item(sighting.id, ).replace({
+    sightingsContainer.item(sighting.id, pokemonObject.form).replace({
       pokemonId: pokemonObject.id,
       pokemonName: pokemonObject.name,
       pokemonForm: pokemonObject.form,
