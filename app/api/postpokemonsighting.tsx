@@ -1,5 +1,5 @@
 "use server"; 
-import { Container, CosmosClient, Database, SqlQuerySpec, QueryIterator } from "@azure/cosmos";
+import { CosmosClient, SqlQuerySpec } from "@azure/cosmos";
 import { DefaultAzureCredential } from "@azure/identity";
 
 import Pokemon from "../entities/pokemon";
@@ -43,17 +43,33 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
 
   // Parse out the json object returned from the query
   const sightingInformation = sightings.resources;
-
+  
   // If the query returned no results, we can assume that then the pokemon sighting does not exist
   // yet and we should create a new item in the container with the passed in information
-  sightingsContainer.items.create({
-    pokemonId: pokemonObject.id,
-    pokemonName: pokemonObject.name,
-    pokemonForm: pokemonObject.form,
-    pokemonType1: pokemonObject.type1,
-    pokemonType2: pokemonObject.type2,
-    abilities: pokemonObject.abilities,
-    moves: pokemonObject.moves,
-  });
+  if (!sightingInformation) { 
+    sightingsContainer.items.create({
+      pokemonId: pokemonObject.id,
+      pokemonName: pokemonObject.name,
+      pokemonForm: pokemonObject.form,
+      pokemonType1: pokemonObject.type1,
+      pokemonType2: pokemonObject.type2,
+      abilities: pokemonObject.abilities,
+      moves: pokemonObject.moves,
+    });
+  } else { 
+    // If the query returned results, we can assume that the pokemon sighting already exists
+    // and we should update the existing item with the new information
+    const sighting = sightingInformation[0];
+    
+    // Update the existing item with the new information
+    sightingsContainer.item(sighting.id, ).replace({
+      pokemonId: pokemonObject.id,
+      pokemonName: pokemonObject.name,
+      pokemonForm: pokemonObject.form,
+      pokemonType1: pokemonObject.type1,
+      pokemonType2: pokemonObject.type2,
+      abilities: pokemonObject.abilities,
+      moves: pokemonObject.moves,
+    });
+  }
 }
-

@@ -14,7 +14,7 @@ export default async function Home({ searchParams }: { searchParams : { [key: st
       <h1>PokeDex</h1>
       <SearchBar />
       <Suspense fallback={<div className="loading">Loading...</div>}>
-      <GalleryContainer search={searchQuery} />
+        <GalleryContainer search={searchQuery} />
       </Suspense>
     </>
   );
