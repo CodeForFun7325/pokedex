@@ -1,13 +1,15 @@
 "use client"; 
-import React, { useEffect, useState, useRef } from 'react'; 
+import React, { useEffect, useState, useRef, JSX } from 'react'; 
 import { useSearchParams } from 'next/navigation';
 
-import PostPokemonSighting from '@/app/api/postPokemonSighting';
+import PostPokemonSighting from '@/app/api/postpokemonsighting';
 import Pokemon from '@/app/entities/pokemon';
 
 import './pokemonform.css';
 
-export default function PokemonForm({moves, abilities, types} : {moves: any[], abilities: any[], types: any[]}) { 
+export default function PokemonForm(
+  {moves, abilities, types} : {moves: unknown, abilities: unknown, types: unknown}
+) { 
 
   /** 
    * Stage: Initialize search params to get the pokemon name and id from the URL
@@ -100,44 +102,47 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
    * Stage: Sort the types, abilities, and moves alphabetically and map them to checkbox elements
    * This will allow us to display the types, abilities, and moves in a user-friendly manner
    */
-  types.sort((typeA, typeB) => typeA.name.localeCompare(typeB.name));
-  types = types.map((type) => {
-    return (
-      <div className="type-option" key={type.name}>
-        <input type="checkbox" name={type.name} value={type.name} onChange={handleTypeCheck}/>
-        <label className="checkbox-label" htmlFor={type.name}>{type.name}</label>
-        <br />
-      </div>
-    );
-  });
 
-  abilities.sort((abilityA, abilityB) => abilityA.name.localeCompare(abilityB.name));
-  abilities = abilities.map((ability) => {
-    return (
-      <div className="ability-option" key={ability.name}>
-        <input type="checkbox" name={ability.name} value={ability.name} onChange={handleAbilityCheck}/>
-        <label className="checkbox-label" htmlFor={ability.name}>{ability.name}</label>
-        <br />
-      </div>
-    );
-  });
+  function sortArrays(
+    pArray : unknown, 
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void  
+  ): JSX.Element[] { 
 
-  moves.sort((moveA, moveB) => moveA.name.localeCompare(moveB.name));
-  moves = moves.map((move) => {
-    return (
-      <div className="move-option" key={move.name}>
-        <input type="checkbox" name={move.name} value={move.name} onChange={handleMovesCheck}/>
-        <label className="checkbox-label" htmlFor={move.name}>{move.name}</label>
-        <br />
-      </div>
-    );
-  });
+    let checkboxes: JSX.Element[] = [];
 
+    if (pArray && Array.isArray(pArray) && pArray.length > 0) { 
 
+      let arrFirstElement = pArray[0];
+
+      // we are going to assume that all the variables in this 
+      // array have the same type as the first element
+      if (arrFirstElement && arrFirstElement instanceof Object) { 
+        if ("name" in arrFirstElement && typeof arrFirstElement.name === "string") {
+          pArray.sort((element1, element2) => element1.name.localeCompare(element2.name));
+          checkboxes = pArray.map((type) => {
+            return (
+              <div className="type-option" key={type.name}>
+                <input type="checkbox" name={type.name} value={type.name} onChange={handleChange}/>
+                <label className="checkbox-label" htmlFor={type.name}>{type.name}</label>
+                <br />
+              </div>
+            );
+          });
+        }
+      }
+    }
+    return checkboxes;
+  }
+
+  let typeCheckboxes = sortArrays(types, handleTypeCheck); 
+  let abilityCheckboxes = sortArrays(abilities, handleAbilityCheck); 
+  let movesCheckboxes = sortArrays(moves, handleMovesCheck); 
 
   /**
    * Stage: Handle the upload button click
-   * This function will create a Pokemon object with the selected types, id, pokemon name, form, abilities, moves, and an empty sprites object
+   * This function will create a Pokemon object with the selected types, id, pokemon name, 
+   * form, abilities, moves, and an empty sprites object.
+   * 
    * It will then call the PostPokemonSighting function to upload the pokemon sighting data to our azure cosmos db
    */
   const handleUploadClick = () => { 
@@ -184,18 +189,18 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
           
           <label>Types: </label>
           <div className="types-list">
-            {types}
+            {typeCheckboxes}
           </div>
           <br />
 
           <label>Abilities: </label>
           <div className="abilities-list">
-            {abilities}
+            {abilityCheckboxes}
           </div>
 
           <label>Moves:</label>
           <div className="moves-list">
-            {moves}
+            {movesCheckboxes}
           </div>
         </form> 
       </div>

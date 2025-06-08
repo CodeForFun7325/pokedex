@@ -1,7 +1,7 @@
 "use client"; 
 import { useQuery } from '@tanstack/react-query';
 import Pokemon from '../entities/pokemon';
-import { Stats } from 'fs';
+import { CosmosDbDiagnosticLevel } from '@azure/cosmos';
 
 export default function useFetchPokemon(url: string) { 
 
@@ -20,16 +20,47 @@ export default function useFetchPokemon(url: string) {
     refetchOnWindowFocus: false, // Prevent refetching on window focus
   }); 
 
+  console.log(data?.moves); 
+
+  let pokemonAbilities : string[] = []; 
+  if (data && data.abilities && Array.isArray(data.abilities)) 
+    
+    pokemonAbilities = data.abilities.map((ability:unknown)  => { 
+      console.log("If statement", ability && ability instanceof Object && 
+         "name" in ability && typeof ability.name === "string");
+
+      if (ability && ability instanceof Object && 
+          "ability" in ability && ability.ability instanceof Object && 
+          "name" in ability.ability && typeof ability.ability.name === "string" ) 
+         
+          return ability.ability.name
+        
+  }); 
+
+  let pokemonMoves : string[] = [];
+  if (data && data.moves && Array.isArray(data.moves)) 
+    
+    pokemonMoves = data.moves.map((move:unknown)  => { 
+      if (move && move instanceof Object && 
+          "move" in move && move.move instanceof Object && 
+          "name" in move.move && typeof move.move.name === "string")
+          
+        return move.move.name
+  }); 
+
+  console.log("Abilities", pokemonAbilities); 
+  console.log("Moves", pokemonMoves)
+
   // parse out only the data we need
   const p : Pokemon = { 
     name: data?.name || '', 
     type1: data?.types[0]?.type?.name || '', 
     type2: data?.types[1]?.type?.name || '', 
     form: "", 
-    abilities: data?.abilities.map((ability: any) => ability.ability.name) || [],
+    abilities: pokemonAbilities,
     id: data?.id || 0, 
     stats: data?.stats || [],
-    moves: data?.moves.map((move: any) => move.move.name) || [],
+    moves:  pokemonMoves,
     sprites: data?.sprites.other["official-artwork"] || {}
   }
   

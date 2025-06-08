@@ -35,12 +35,22 @@ function Info({ url, handleCloseInfo} : infoProps)
     );
   }
 
-  const PokemonStats = p?.stats.map((stat : any) => { 
-    const pokemonStat : Stats = { 
-      "base_stat": stat.base_stat,  
-      "stat": stat.stat.name
+  const PokemonStats = p?.stats.map((statObject : unknown) => {
+    const pokemonStat : Stats = {
+      "base_stat": 0, 
+      "stat": ""
     }
-    
+
+    if (statObject && statObject instanceof Object) { 
+
+      if ("base_stat" in statObject && typeof statObject.base_stat === "number") 
+        pokemonStat.base_stat = statObject.base_stat
+
+      if ("stat" in statObject && statObject.stat && statObject.stat instanceof Object) 
+        if ("name" in statObject.stat && typeof statObject.stat.name === "string")
+          pokemonStat.stat = statObject.stat.name; 
+    }
+
     return pokemonStat; 
   }); 
 
