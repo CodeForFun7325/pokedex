@@ -1,5 +1,5 @@
 "use client"; 
-import React, { useCallback, useState } from 'react'; 
+import React, { useEffect, useState, useRef } from 'react'; 
 import { useSearchParams } from 'next/navigation';
 
 import PostPokemonSighting from '@/app/api/postPokemonSighting';
@@ -8,17 +8,42 @@ import Pokemon from '@/app/entities/pokemon';
 import './pokemonform.css';
 
 export default function PokemonForm({moves, abilities, types} : {moves: any[], abilities: any[], types: any[]}) { 
+  /** 
+   * Stage: Initialize search params to get the pokemon name and id from the URL
+   * The pokemon name is used to display the pokemon's name in the form
+   * The pokemon id is used to identify the pokemon in the database
+  */
+  const searchParams = useSearchParams();
+  
+  let pokemonName : string | null = searchParams.get('pokemon'); 
+  pokemonName = pokemonName ? pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1) : ""; // Capitalize the first letter of the pokemon name
+  
+  let pokemonIdString : string | null = searchParams.get('id');
+  let pokemonId : number = pokemonIdString ? parseInt(pokemonIdString) : 0; // Parse the pokemon ID from the search params
+  
+
+
+  /**
+   * Stage: Initialize constants for the maximum number of types and abilities a pokemon can have
+   * Each pokemon can have a maximum of 2 types and 1 ability
+   * The form will enforce these limits by disabling the checkboxes when the maximum is reached
+  */
   const maxTypes = 2; // A Pokemon can have a maximum of 2 types
   const maxAbilities = 1; // A pokemon can have a maximum of 1 ability
 
-  const searchParams = useSearchParams();
-  const [form, setForm ] = useState<string>(""); 
-  const [image, setImage] = useState<string | null>(null); 
-  const [checkedMoves, setCheckedMoves] = useState<string[]>([]); // Array of selected moves
-  const [checkedTypes, setCheckedTypes] = useState<string[]>([]); // Array of selected types
-  const [checkedAbilities, setCheckedAbilities] = useState<string>(""); // Array of selected abilities
+  const [image, setImage] = useState<string | null>(null); // Image of pokemon sighting
+  const refFormInput = useRef<HTMLInputElement>(null); // Reference to the form input field
+  const refCheckedTypes = useRef<Set<string>>(new Set()); // Reference to a set of checked types
+  const refCheckedAbility = useRef<string>(""); // Reference to the checked ability
+  const refCheckedMoves = useRef<Set<string>>(new Set()); // Refernece to a set of checked moves
 
-  // Sets the image state when a file is selected
+
+
+  /** 
+   * Stage: Initialize the image upload functionality
+   * When the user selects an image file, we read it and set the image state to the base64 encoded string
+   * This will allow us to display a preview of the image in the form  
+  */
   const setImageOnChange = (e : React.ChangeEvent<HTMLInputElement>) => { 
     const file = e.target.files?.[0]; 
 
@@ -29,56 +54,52 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
     }
   }
 
-  // Capitalizes the first letter of the pokemon name from the search params
-  let pokemonName : string | null = searchParams.get('pokemon');
-  pokemonName = pokemonName ? pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1) : ""; 
 
-  let pokemonIdString : string | null = searchParams.get('id');
-  let pokemonId : number = pokemonIdString ? parseInt(pokemonIdString) : 0; // Parse the pokemon ID from the search params
 
-  // Handles the change event for the checkboxes
-  // The functions check if the maximum number of types or abilities has been reached
-  // Updates the state of checked moves, abilities, and types, and pokemon form
+  /** 
+   * Stage = Initialize handle functions for checkboxes
+   * These functions will handle the checking and unchecking of the checkboxes for types, moves, and abilities
+   * They will also enforce the maximum number of types and abilities a pokemon can have
+   * If the user tries to check more than the maximum, an alert will be shown and the checkbox will be unchecked
+  */
   const handleTypeCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {                                 // if we are checking the checkbox
-      if (checkedTypes.length < maxTypes) {                 // chec if the max types has been reached
-        setCheckedTypes([...checkedTypes, e.target.value]);
-      } else {
-        e.target.checked = false; // Uncheck the checkbox
-        alert(`You can only select up to ${maxTypes} types.`);
-      }
-    } else { // we are unchecking the checkbox and removing the type from the checked types
-      setCheckedTypes(checkedTypes.filter((type) => type !== e.target.value)); 
+    if (e.target.checked && refCheckedTypes.current.size < maxTypes) { 
+      refCheckedTypes.current.add(e.target.value); // Add the type to the set of checked types
     }
-  }; 
-
-  const handleAbilitiiesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      if (checkedAbilities == "") { // If an ability has not been selected yet
-        setCheckedAbilities(e.target.value);
-      } else {
-        e.target.checked = false; // Uncheck the checkbox
-        alert(`You can only select up to ${maxAbilities} abilities.`);
-      }
-    } else { 
-      setCheckedAbilities(""); 
+    else if (e.target.checked && refCheckedTypes.current.size >= maxTypes) {
+      e.target.checked = false; // Uncheck the checkbox
+      alert(`You can only select up to ${maxTypes} types.`);
+    }
+    else { 
+      refCheckedTypes.current.delete(e.target.value); // Remove the type from the set of checked types
     }
   }
 
   const handleMovesCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setCheckedMoves([...checkedMoves, e.target.value]);
-    } else {
-      setCheckedMoves(checkedMoves.filter((move) => move !== e.target.value));
+    if (e.target.checked) 
+      refCheckedMoves.current.add(e.target.value); // Add the move to the set of checked moves
+    else 
+      refCheckedMoves.current.delete(e.target.value); // Remove the move from the set of checked moves
+  }
+
+  const handleAbilityCheck = (e : React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked && refCheckedAbility.current === "") { 
+      refCheckedAbility.current = e.target.value; // Set the checked ability
+    } else if (e.target.checked && refCheckedAbility.current !== "") {
+      e.target.checked = false; // Uncheck the checkbox
+      alert(`You can only select up to ${maxAbilities} ability.`);
+    } else { 
+      refCheckedAbility.current = ""; // Reset the checked ability
     }
   }
 
-  const handleFormChange = useCallback((e : React.ChangeEvent<HTMLInputElement>) => {
-    setForm(e.target.value); // Update the form state with the input value;
-  }, [])
 
-  // Sort the moves, abilities, and types alphabetically
-  // Map the moves, abilities, and types to create a list of checkboxes
+  /**
+   * Stage: Sort the types, abilities, and moves alphabetically and map them to checkbox elements
+   * This will allow us to display the types, abilities, and moves in a user-friendly manner
+   * 
+   * TODO: Need to change the sorting to be typed specific. We are currently using type any which is not ideal.
+   */
   types.sort((typeA, typeB) => typeA.name.localeCompare(typeB.name));
   types = types.map((type) => {
     return (
@@ -94,7 +115,7 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   abilities = abilities.map((ability) => {
     return (
       <div className="ability-option" key={ability.name}>
-        <input type="checkbox" name={ability.name} value={ability.name} onChange={handleAbilitiiesCheck}/>
+        <input type="checkbox" name={ability.name} value={ability.name} onChange={handleAbilityCheck}/>
         <label className="checkbox-label" htmlFor={ability.name}>{ability.name}</label>
         <br />
       </div>
@@ -112,24 +133,32 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
     );
   });
 
-  // When the upload button is clicked, we call the PostPokemonSighting function
-  // with the selected types, id, pokemon name, form, abilities, moves, and an empty sprites object
+
+  /**
+   * Stage: Handle the upload button click
+   * This function will create a Pokemon object with the selected types, id, pokemon name, form, abilities, moves, and an empty sprites object
+   * It will then call the PostPokemonSighting function to upload the pokemon sighting data to our azure cosmos db
+   */
   const handleUploadClick = () => { 
     const pokemonObject : Pokemon = { 
       name: pokemonName, 
-      type1: checkedTypes.length > 0 ? checkedTypes[0] : "", 
-      type2: checkedTypes.length > 1 ? checkedTypes[1] : "",
-      form: form, 
+      type1: [...refCheckedMoves.current].length > 0 ? [...refCheckedTypes.current][0] : "", 
+      type2: [...refCheckedMoves.current].length > 1 ? [...refCheckedTypes.current][1] : "",
+      form: refFormInput.current?.value || "", 
       id: pokemonId, 
-      abilities: [checkedAbilities], 
+      abilities: [refCheckedAbility.current], 
       stats: [], 
-      moves: checkedMoves, 
+      moves: [...refCheckedMoves.current], 
       sprites: {}
     }
 
     PostPokemonSighting(pokemonObject);
   }
 
+  
+  /**
+   * Stage: Render the Pokemon Form
+   */
   return (
     <>
       <div className="report-form">
@@ -149,7 +178,7 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
           <br />
 
           <label htmlFor="form">Form: </label>
-          <input id="form" type="text" name="form" onChange={handleFormChange}/>
+          <input id="form" type="text" name="form"/>
           <br /> 
           
           <label>Types: </label>
