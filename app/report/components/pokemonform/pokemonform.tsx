@@ -8,6 +8,7 @@ import Pokemon from '@/app/entities/pokemon';
 import './pokemonform.css';
 
 export default function PokemonForm({moves, abilities, types} : {moves: any[], abilities: any[], types: any[]}) { 
+
   /** 
    * Stage: Initialize search params to get the pokemon name and id from the URL
    * The pokemon name is used to display the pokemon's name in the form
@@ -20,7 +21,7 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   
   let pokemonIdString : string | null = searchParams.get('id');
   let pokemonId : number = pokemonIdString ? parseInt(pokemonIdString) : 0; // Parse the pokemon ID from the search params
-  
+
 
 
   /**
@@ -94,11 +95,10 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
   }
 
 
+
   /**
    * Stage: Sort the types, abilities, and moves alphabetically and map them to checkbox elements
    * This will allow us to display the types, abilities, and moves in a user-friendly manner
-   * 
-   * TODO: Need to change the sorting to be typed specific. We are currently using type any which is not ideal.
    */
   types.sort((typeA, typeB) => typeA.name.localeCompare(typeB.name));
   types = types.map((type) => {
@@ -132,6 +132,7 @@ export default function PokemonForm({moves, abilities, types} : {moves: any[], a
       </div>
     );
   });
+
 
 
   /**
