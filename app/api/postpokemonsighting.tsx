@@ -47,32 +47,24 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
   
   // If the query returned no results, we can assume that the pokemon sighting does not exist
   // yet and we should create a new item in the container with the passed in information
-  if (!sighting) { 
-    sightingsContainer.items.create({
-      id: String(pokemonObject.id),
-      pokemonId: pokemonObject.id,
-      pokemonName: pokemonObject.name,
-      pokemonForm: pokemonObject.form,
-      pokemonType1: pokemonObject.type1,
-      pokemonType2: pokemonObject.type2,
-      abilities: pokemonObject.abilities,
-      moves: pokemonObject.moves,
-    });
-  } else { 
-    // If the query returned results, we can assume that the pokemon sighting already exists
-    // and we should update the existing item with the new information
-    // Update the existing item with the new information
+  try { 
+    if (!sighting) { 
+      sightingsContainer.items.create({
+        id: String(pokemonObject.id),
+        pokemonId: pokemonObject.id,
+        pokemonName: pokemonObject.name,
+        pokemonForm: pokemonObject.form,
+        pokemonType1: pokemonObject.type1,
+        pokemonType2: pokemonObject.type2,
+        abilities: pokemonObject.abilities,
+        moves: pokemonObject.moves,
+      });
 
-    sightingsContainer.item(String(pokemonObject.id), [pokemonObject.name, pokemonObject.form])
-                      .replace({
-      id: String(pokemonObject.id), 
-      pokemonId: pokemonObject.id,
-      pokemonName: pokemonObject.name,
-      pokemonForm: pokemonObject.form,
-      pokemonType1: pokemonObject.type1,
-      pokemonType2: pokemonObject.type2,
-      abilities: pokemonObject.abilities,
-      moves: pokemonObject.moves,
-    });
+      return { success: true, message: "Uploaded successfully" }
+    } 
+  } catch (error) { 
+    // TODO: Need to add better error handling here. Probably going to be 
+    // based on status code
+    return { success: false, message: "There was an error uploading the data to the PokeDex"}
   }
 }
