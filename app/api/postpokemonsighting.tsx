@@ -26,15 +26,15 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
   // Query for a specific pokemon sighting with the given pokemon name and form
   // We expect this to always return a single item, as each pokemon sightings are unique
   const querySpec : SqlQuerySpec = {
-    query: "SELECT * FROM c WHERE c.pokemonName = @pokemonName AND c.pokemonForm = @pokemonForm",
+    query: "SELECT * FROM Sightings s WHERE s.pokemonName = @pokemonName AND s.pokemonForm = @pokemonForm",
     parameters: [
       {
         name: "@pokemonName",
-        value: "charizard" // Example pokemon ID, replace with actual ID
+        value: pokemonObject.name // Example pokemon ID, replace with actual ID
       }
       , {
         name: "@pokemonForm",
-        value: "x" // Example pokemon form, replace with actual form
+        value: pokemonObject.form // Example pokemon form, replace with actual form
       }
     ]
   };
@@ -49,6 +49,7 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
   // yet and we should create a new item in the container with the passed in information
   if (!sighting) { 
     sightingsContainer.items.create({
+      id: String(pokemonObject.id),
       pokemonId: pokemonObject.id,
       pokemonName: pokemonObject.name,
       pokemonForm: pokemonObject.form,
@@ -61,7 +62,10 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
     // If the query returned results, we can assume that the pokemon sighting already exists
     // and we should update the existing item with the new information
     // Update the existing item with the new information
-    sightingsContainer.item(sighting.id, pokemonObject.form).replace({
+
+    sightingsContainer.item(String(pokemonObject.id), [pokemonObject.name, pokemonObject.form])
+                      .replace({
+      id: String(pokemonObject.id), 
       pokemonId: pokemonObject.id,
       pokemonName: pokemonObject.name,
       pokemonForm: pokemonObject.form,

@@ -145,11 +145,13 @@ export default function PokemonForm(
    * 
    * It will then call the PostPokemonSighting function to upload the pokemon sighting data to our azure cosmos db
    */
+
   const handleUploadClick = () => { 
+
     const pokemonObject : Pokemon = { 
       name: pokemonName, 
-      type1: [...refCheckedMoves.current].length > 0 ? [...refCheckedTypes.current][0] : "", 
-      type2: [...refCheckedMoves.current].length > 1 ? [...refCheckedTypes.current][1] : "",
+      type1: [...refCheckedTypes.current].length > 0 ? [...refCheckedTypes.current][0] : "", 
+      type2: [...refCheckedTypes.current].length > 1 ? [...refCheckedTypes.current][1] : "",
       form: refFormInput.current?.value || "", 
       id: pokemonId, 
       abilities: [refCheckedAbility.current], 
@@ -184,7 +186,7 @@ export default function PokemonForm(
           <br />
 
           <label htmlFor="form">Form: </label>
-          <input id="form" type="text" name="form"/>
+          <input ref={refFormInput} id="form" type="text" name="form"/>
           <br /> 
           
           <label>Types: </label>
