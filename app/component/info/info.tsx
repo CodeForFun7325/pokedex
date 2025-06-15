@@ -35,8 +35,6 @@ function Info({ url, handleCloseInfo} : infoProps)
     );
   }
 
-  console.log(p?.stats);
-
   // If data is returned show info card
   return (
     <div className="info-container">

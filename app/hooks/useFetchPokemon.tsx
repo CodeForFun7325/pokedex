@@ -58,7 +58,6 @@ export default function useFetchPokemon(url: string) {
 
       if (stat && stat instanceof Object) { 
 
-        console.log("base_stat" in stat && typeof stat.base_stat === "number")
         if ("base_stat" in stat && typeof stat.base_stat === "number")
           pokemonStat.base_stat = stat.base_stat; 
         
