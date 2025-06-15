@@ -13,5 +13,5 @@ export const statsDecodeMap: StatsDecodeMap = {
   "defense": "Def",
   "special-attack": "Sp. Atk",
   "special-defense": "Sp. Def",
-  "speed": "Speed"
+  "speed": "Spd"
 };

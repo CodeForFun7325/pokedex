@@ -1,15 +1,16 @@
 "use client"; 
-import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from "recharts";
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, BarChart, CartesianGrid, XAxis, YAxis, Bar } from "recharts";
+
 import Stats from "./../../entities/stats";
 
 export default function StatsGraph({ stats } :{stats : Stats[] | []}) { 
 
   return (
-    <RadarChart outerRadius={90} width={500} height={300} data={stats}>
+    <RadarChart cx="50%" cy="50%" outerRadius={80} width={320} height={320} data={stats}>
       <PolarGrid />
-      <PolarAngleAxis dataKey="statDecode" />
-      <PolarRadiusAxis angle={30} domain={[0, 150]} />
-      <Radar name="Stats" dataKey="base_stat" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+      <PolarAngleAxis dataKey="statDecode" tick={{fontSize: '.9rem', fill: '#FFFFFF'}}/>
+      <PolarRadiusAxis angle={30} domain={[0, 120]} tick={{fontSize: '.9rem', fill: '#FFFFFF'}} />
+      <Radar name="Stats" dataKey="base_stat" stroke="#eef509" fill="#eef509" fillOpacity={0.7} />
       <Legend />
     </RadarChart>
   );
