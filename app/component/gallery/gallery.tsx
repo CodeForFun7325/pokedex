@@ -31,7 +31,7 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
             name={pokemon.name} 
             url={pokemon.url} 
             imageSource={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`}
-            onClick={handlePokemonSelect}/>
+            onClick={handlePokemonSelect} />
     ); 
   });
   

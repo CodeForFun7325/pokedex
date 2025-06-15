@@ -19,7 +19,7 @@ function SearchBar() {
       <div className="search-bar">
         <input className="search-bar" 
           type="text" 
-          onChange={handleSearchOnChange} 
+          onInput={handleSearchOnChange} 
           placeholder="Search Pokémon..." />
       </div>
     </div>

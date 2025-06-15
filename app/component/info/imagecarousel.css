@@ -1,6 +1,6 @@
 .image-carousel { 
-  width: 300px; 
-  height: 300px; 
+  width: 250px; 
+  height: 250px; 
   position: relative; 
 }
 
@@ -12,8 +12,8 @@
 
 .slide > img { 
   display: block; 
-  width: 300px; 
-  height: 300px; 
+  width: 250px; 
+  height: 250px; 
   object-fit: cover; 
   object-position: center;
   border: 2px solid #141414;
@@ -38,7 +38,6 @@
   font-size: 1.5rem; 
   top: 50%; 
   transform: translateY(-50%);
-  color: white; 
   cursor: pointer; 
   background-color: rgba(255, 255, 255, .3); 
 }

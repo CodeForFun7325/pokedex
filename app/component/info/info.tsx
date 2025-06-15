@@ -22,7 +22,7 @@ function Info({ url, handleCloseInfo} : infoProps)
 {
 
   const data = useFetchPokemon(url);
-  const p : Pokemon | null = data == null ? null : data.p;
+  const p : Pokemon | undefined = data?.p;
 
   /// If no data is returned, show loading text
   /// This is to prevent the main component from rendering before the data is successfully fetched
@@ -35,12 +35,22 @@ function Info({ url, handleCloseInfo} : infoProps)
     );
   }
 
-  const PokemonStats = p?.stats.map((stat : any) => { 
-    const pokemonStat : Stats = { 
-      "base_stat": stat.base_stat,  
-      "stat": stat.stat.name
+  const PokemonStats = p?.stats.map((statObject : unknown) => {
+    const pokemonStat : Stats = {
+      "base_stat": 0, 
+      "stat": ""
     }
-    
+
+    if (statObject && statObject instanceof Object) { 
+
+      if ("base_stat" in statObject && typeof statObject.base_stat === "number") 
+        pokemonStat.base_stat = statObject.base_stat
+
+      if ("stat" in statObject && statObject.stat && statObject.stat instanceof Object) 
+        if ("name" in statObject.stat && typeof statObject.stat.name === "string")
+          pokemonStat.stat = statObject.stat.name; 
+    }
+
     return pokemonStat; 
   }); 
 
@@ -52,16 +62,16 @@ function Info({ url, handleCloseInfo} : infoProps)
 
       {/* Image carousel */}
       <div aria-label={`Images of ${p?.name}`} className="pokemon-attributes"> 
+        <h2>{p?.name.toUpperCase()}</h2>
+        <Link className="report-btn" href={`/report?pokemon=${p?.name}&id=${p?.id}`}>Report Sighting</Link>
+        <br />
         <ImageCarousel sprites={p?.sprites || {}} />
-        <StatsGraph stats={PokemonStats || []}/>
+        {/* <StatsGraph stats={PokemonStats || []}/> */}
       </div>
 
       {/* Information section of card */}
       <div aria-label={`Information on ${p?.name}`} className="pokemon-info">
-        <div>
-          <h2>{p?.name.toUpperCase()}</h2>
-          <Link className="report-btn" href={`/report?pokemon=${p?.name}`}>Report Sighting</Link>
-        </div>
+        
         <br />
 
         <p><strong>Types: </strong>  {p?.type1}{p?.type2 == "" ? "" : ", "}{p?.type2}</p>
