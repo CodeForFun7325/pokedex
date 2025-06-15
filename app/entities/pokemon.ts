@@ -1,3 +1,5 @@
+import Stats from "./stats";
+
 export default interface Pokemon { 
   name: string;
   type1: string;
@@ -5,7 +7,7 @@ export default interface Pokemon {
   form: string;
   id: number; 
   abilities: string[];
-  stats: {}[];
+  stats: Stats[];
   moves: string[];
   sprites: {};
 }
