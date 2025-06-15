@@ -103,3 +103,21 @@ resource "azurerm_cosmosdb_sql_container" "pokemon_sightings" {
 
   throughput = 400
 }
+
+resource "azurerm_storage_account" "pokedex_storage" {
+  name                     = "pokestorageaccount7325"
+  resource_group_name      = azurerm_resource_group.pokedex.name
+  location                 = azurerm_resource_group.pokedex.location
+  account_tier             = "Standard"
+  account_replication_type = "ZRS"
+
+  tags = {
+    environment = "development"
+    project     = "pokedex"
+  }
+}
+
+resource "azurerm_storage_container" "pokedex_container" {
+  name               = "pokemon-images"
+  storage_account_id = azurerm_storage_account.pokedex_storage.id
+}

@@ -1,20 +1,32 @@
 "use server"; 
 import { CosmosClient, SqlQuerySpec } from "@azure/cosmos";
+import { BlobClient, BlobServiceClient, ContainerClient } from "@azure/storage-blob";
 import { DefaultAzureCredential } from "@azure/identity";
 
+import * as dotenv from  "dotenv"; 
+
 import Pokemon from "../entities/pokemon";
+
 
 //az cosmosdb sql role assignment create --account-name pokedex-db-account --resource-group pokedex-rg --scope "/" --principal-id 6418cc17-1ba6-46bd-90cc-24bfb6788017 --role-definition-id "00000000-0000-0000-0000-000000000002"
 
 export default async function PostPokemonSighting(pokemonObject : Pokemon) {
 
-  // Authenticate to Azure Cosmos DB
-  const endpoint = "https://pokedex-db-account.documents.azure.com:443/";
+  dotenv.config({path: ".env.development.local"}); 
 
+  // Initialize cosmos db and storage account endpoints
+  const dbEndpoint = "https://pokedex-db-account.documents.azure.com:443/";
+  const storageEndpoint = "https://pokestorageaccount7325.z5.web.core.windows.net/"; 
+
+  // Initialize new azure credential object
   const credential = new DefaultAzureCredential();
 
   // Create new database client. This is client object is used to interact with the database.
-  const client = new CosmosClient({ endpoint, aadCredentials: credential });
+  const client = new CosmosClient({ endpoint: dbEndpoint, aadCredentials: credential });
+
+  // Initialize blob storage account client to interact with the blob service
+  const blobServiceClient = new BlobServiceClient(storageEndpoint, credential);
+  const containerClient = await blobServiceClient.getContainerClient("pokemon-images");
 
   // Fetch pokdex-db database 
   const pokedexDb= client.database("pokedex-db");

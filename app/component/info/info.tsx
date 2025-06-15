@@ -62,16 +62,16 @@ function Info({ url, handleCloseInfo} : infoProps)
 
       {/* Image carousel */}
       <div aria-label={`Images of ${p?.name}`} className="pokemon-attributes"> 
+        <h2>{p?.name.toUpperCase()}</h2>
+        <Link className="report-btn" href={`/report?pokemon=${p?.name}&id=${p?.id}`}>Report Sighting</Link>
+        <br />
         <ImageCarousel sprites={p?.sprites || {}} />
-        <StatsGraph stats={PokemonStats || []}/>
+        {/* <StatsGraph stats={PokemonStats || []}/> */}
       </div>
 
       {/* Information section of card */}
       <div aria-label={`Information on ${p?.name}`} className="pokemon-info">
-        <div>
-          <h2>{p?.name.toUpperCase()}</h2>
-          <Link className="report-btn" href={`/report?pokemon=${p?.name}&id=${p?.id}`}>Report Sighting</Link>
-        </div>
+        
         <br />
 
         <p><strong>Types: </strong>  {p?.type1}{p?.type2 == "" ? "" : ", "}{p?.type2}</p>

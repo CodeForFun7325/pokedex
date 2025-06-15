@@ -8,12 +8,13 @@
   height: 90%; 
   z-index: 100000; 
   display: block; 
-  opacity: 0.98; 
+  opacity: 0.98;
   border: 2px solid #141414;
   padding: 2rem; 
   display: flex; 
-  flex-direction: row; 
-  justify-content: space-around;
+  flex-direction: column; 
+  align-items: center;
+  overflow-y: scroll; 
 }
 
 .close-btn { 
@@ -33,9 +34,9 @@
 }
 
 .pokemon-info { 
-  width: 50%; 
-  line-height: 1.5rem;
-  overflow-y: scroll;
+  width: 100%; 
+  line-height: 1.25rem;
+  width: 250px; 
 }
 
 .abilities, .moves {
@@ -45,7 +46,6 @@
 .pokemon-attributes { 
   display: flex; 
   flex-direction: column; 
-  justify-content: space-around;
   align-items: center;
 }
 

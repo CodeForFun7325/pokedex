@@ -43,8 +43,8 @@ export default function ImageCarousel({ sprites }: { sprites: {} }) {
 
   return (
     <div className="image-carousel">
-      <button className="carousel-button prev" onClick={handlePrevClick}>&#x27F5;</button>
-      <button className="carousel-button next" onClick={handleNextClick}>&#x27F6;</button>
+      <button className="carousel-button prev" onClick={handlePrevClick}>&#706;</button>
+      <button className="carousel-button next" onClick={handleNextClick}>&#707;</button>
       <ul> 
         {spriteImages}
       </ul>
