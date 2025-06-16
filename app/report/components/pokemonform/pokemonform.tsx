@@ -97,7 +97,6 @@ export default function PokemonForm(
   }
 
 
-
   /**
    * Stage: Sort the types, abilities, and moves alphabetically and map them to checkbox elements
    * This will allow us to display the types, abilities, and moves in a user-friendly manner
