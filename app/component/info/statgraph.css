@@ -1,0 +1,27 @@
+.stats-container { 
+  width: 320px; 
+  height: 320px; 
+}
+
+@media (min-width: 480px) { 
+  .stats-container { 
+    width: 360px; 
+    height: 360px; 
+  }
+}
+
+@media (min-width: 576px) { 
+  .stats-container { 
+    width: 450px; 
+    height: 450px; 
+  }
+}
+
+@media (min-width: 768px) { 
+  .stats-container { 
+    width: 500px; 
+    height: 500px; 
+  }
+}
+
+

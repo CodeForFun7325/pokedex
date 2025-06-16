@@ -16,7 +16,6 @@ type infoProps = {
 
 // Entities
 import Pokemon from "../../entities/pokemon";
-import Stats from "@/app/entities/stats";
 
 function Info({ url, handleCloseInfo} : infoProps) 
 {
