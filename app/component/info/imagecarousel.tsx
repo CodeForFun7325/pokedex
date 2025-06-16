@@ -6,7 +6,7 @@ export default function ImageCarousel({ sprites }: { sprites: {} }) {
 
   const [activeSlideIndex, setActiveSlideIndex] = useState(0); 
 
-  // parse sprites object into multiple image elements
+  /** Stage: Map the object of images into an array of list item elements with child image components */ 
   let spriteImages = Object.entries(sprites)
     .filter(([_, value]) => typeof value === "string")
     .map(([key, value], index) => {
@@ -17,7 +17,7 @@ export default function ImageCarousel({ sprites }: { sprites: {} }) {
       );
     });
 
-  // On-click event functions to move to the previous image
+  /** Stage: Event handler function to move to the previous/next image when the user clicks the arrows */
   const handlePrevClick = () => { 
     let newIndex : number = activeSlideIndex - 1; 
     

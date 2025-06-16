@@ -2,6 +2,7 @@
 import Link from "next/link";
 import ImageCarousel from "./imagecarousel";
 import StatsGraph from "./statgraph";
+import Loading from "../loading/loading";
 
 // Custom Hooks
 import useFetchPokemon from "../../hooks/useFetchPokemon";
@@ -20,21 +21,12 @@ import Pokemon from "../../entities/pokemon";
 function Info({ url, handleCloseInfo} : infoProps) 
 {
 
+  /** Stage: Call custom hook to fetch data */
   const data = useFetchPokemon(url);
   const p : Pokemon | undefined = data?.p;
 
-  /// If no data is returned, show loading text
-  /// This is to prevent the main component from rendering before the data is successfully fetched
-  if (data == null) { 
-    return (
-      <div className="info-container">
-        <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
-        <p className="loading-text">Retrieving Data...</p>
-      </div>
-    );
-  }
 
-  // If data is returned show info card
+  /** Stage = Render the info card once data has been returned */
   return (
     <div className="info-container">
       {/* Close button */}

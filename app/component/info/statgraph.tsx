@@ -5,7 +5,7 @@ import Stats from "./../../entities/stats";
 import "./statgraph.css";
 
 export default function StatsGraph({ stats } :{stats : Stats[] | []}) { 
-
+  /** Stage: Render a radar graph when given an array of stats */
   return (
     <div className="stats-container">
       <ResponsiveContainer width="100%" height="100%">

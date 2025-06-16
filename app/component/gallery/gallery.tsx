@@ -21,7 +21,7 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
   
   const { selectedPokemonUrl, showInfo, handlePokemonSelect } = usePokemonSelect();
 
-  // Create pokemon cards using the pokemons array passed as a prop
+  /** Stage: Map the list of pokemons into card components */
   const PokemonCards =  pokemons.map((pokemon) => { 
     const urlComponent = pokemon.url.split("/");
     const index = urlComponent[urlComponent.length - 2];
@@ -35,6 +35,10 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
     ); 
   });
   
+  /** Stage: Render the list of card components
+   * If the user has clicked a pokemon card, we will also render the info component
+   * This info component will retrieve the pokemon data from the PokeAPI and display it
+   */
   return (
     <div className="gallery">
       {PokemonCards}
