@@ -101,10 +101,10 @@ export default function PokemonForm(
    * Stage: Sort the types, abilities, and moves alphabetically and map them to checkbox elements
    * This will allow us to display the types, abilities, and moves in a user-friendly manner
    */
-
   function sortArrays(
+    arrayContent: string,
     pArray : unknown, 
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void  
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   ): JSX.Element[] { 
 
     let checkboxes: JSX.Element[] = [];
@@ -120,8 +120,8 @@ export default function PokemonForm(
           pArray.sort((element1, element2) => element1.name.localeCompare(element2.name));
           checkboxes = pArray.map((type) => {
             return (
-              <div className="type-option" key={type.name}>
-                <input type="checkbox" name={type.name} value={type.name} onChange={handleChange}/>
+              <div className={`checkbox-container ${arrayContent}-option`} key={type.name}>
+                <input className="checkbox" type="checkbox" name={type.name} value={type.name} onChange={handleChange}/>
                 <label className="checkbox-label" htmlFor={type.name}>{type.name}</label>
                 <br />
               </div>
@@ -133,10 +133,11 @@ export default function PokemonForm(
     return checkboxes;
   }
 
-  let typeCheckboxes = sortArrays(types, handleTypeCheck); 
-  let abilityCheckboxes = sortArrays(abilities, handleAbilityCheck); 
-  let movesCheckboxes = sortArrays(moves, handleMovesCheck); 
+  let typeCheckboxes = sortArrays("types", types, handleTypeCheck); 
+  let abilityCheckboxes = sortArrays("abilities", abilities, handleAbilityCheck); 
+  let movesCheckboxes = sortArrays("moves", moves, handleMovesCheck); 
 
+  
   /**
    * Stage: Handle the upload button click
    * This function will create a Pokemon object with the selected types, id, pokemon name, 
@@ -144,7 +145,6 @@ export default function PokemonForm(
    * 
    * It will then call the PostPokemonSighting function to upload the pokemon sighting data to our azure cosmos db
    */
-
   const handleUploadClick = () => { 
 
     const pokemonObject : Pokemon = { 
@@ -169,43 +169,49 @@ export default function PokemonForm(
   return (
     <>
       <div className="report-form">
+
         {/* Image Upload Section */}
-        <form className="image-upload">
-          <h2>{pokemonName} Image</h2>
-          <br />
-          {image && <img src={image} alt="Uploaded image preview" id="imagePreview" />}
-          <input type="file" id="imageUpload" accept="image/*" onChange={setImageOnChange}/>
-        </form>
+        <div className="image-upload-section">
+          <form className="image-upload-form">
+            <h2>{pokemonName} Image</h2>
+            <br />
+            {image && <img src={image} alt="Uploaded image preview" id="image-preview" />}
+            <input type="file" id="imageUpload" accept="image/*" onChange={setImageOnChange}/>
+          </form>
+        </div>
 
         <br />
 
         {/* Pokemon Details */}
-        <form className="pokemon-details"> 
-          <h2>{pokemonName} Details</h2>
-          <br />
+        <div className="pokemon-details-section">
+          <form className="pokemon-details-form"> 
+            <h2>{pokemonName} Details</h2>
+            <br />
 
-          <label htmlFor="form">Form: </label>
-          <input ref={refFormInput} id="form" type="text" name="form"/>
-          <br /> 
-          
-          <label>Types: </label>
-          <div className="types-list">
-            {typeCheckboxes}
-          </div>
-          <br />
+            <label htmlFor="form">Form: </label>
+            <input ref={refFormInput} id="form" type="text" name="form"/>
+            <br /> 
+            
+            <label>Types: </label>
+            <div className="types-list">
+              {typeCheckboxes}
+            </div>
+            <br />
 
-          <label>Abilities: </label>
-          <div className="abilities-list">
-            {abilityCheckboxes}
-          </div>
+            <label>Abilities: </label>
+            <div className="abilities-list">
+              {abilityCheckboxes}
+            </div>
 
-          <label>Moves:</label>
-          <div className="moves-list">
-            {movesCheckboxes}
-          </div>
-        </form> 
+            <label>Moves:</label>
+            <div className="moves-list">
+              {movesCheckboxes}
+            </div> 
+          </form> 
+        </div>
       </div>
-      <button className="upload-button" onClick={handleUploadClick}>Upload Data</button>
+
+      <button className="upload-button">Upload Data</button>
     </>
   );
 }

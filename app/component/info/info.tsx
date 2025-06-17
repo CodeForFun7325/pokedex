@@ -2,7 +2,7 @@
 import Link from "next/link";
 import ImageCarousel from "./imagecarousel";
 import StatsGraph from "./statgraph";
-import Loading from "../loading/loading";
+import GlobalLoading from "../loading/loading";
 
 // Custom Hooks
 import useFetchPokemon from "../../hooks/useFetchPokemon";

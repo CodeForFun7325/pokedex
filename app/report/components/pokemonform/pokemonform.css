@@ -1,60 +1,71 @@
 .report-form { 
-  margin: auto; 
-  padding: 2rem;  
   display: flex; 
   flex-direction: row;
-  justify-content: center;
+  flex-wrap: wrap; 
 }
 
-.image-upload { 
+.image-upload-section, 
+.pokemon-details-section { 
+  width: 100%; 
+  margin: 2rem 0; 
+}
+
+.image-upload-form, 
+.pokemon-details-form { 
+  width: 300px; 
+  margin: 0 auto; 
+}
+
+#image-preview { 
+  width: 100%; 
+}
+
+.pokemon-details-form > input, .pokemon-details > label { 
+  margin-bottom: 1rem; 
+}
+
+.checkbox-container { 
   display: flex; 
-  flex-direction: column; 
   align-items: center; 
-}
-
-.image-upload, .pokemon-details { 
-  width: 500px; 
-  height: 1000px; 
-  margin-left: auto;
-  margin-right: auto; 
-}
-
-#imagePreview { 
-  width: 400px; 
-  margin-top: 20px;
-  margin-bottom: 20px; 
-}
-
-.pokemon-details > input, .pokemon-details > label { 
-  margin: 0.5rem 0; 
 }
 
 .checkbox-label{ 
   margin-left: .5rem;
 }
 
-.types-list { 
+.checkbox { 
+  width: 20px;
+  height: 20px;
+}
+
+.types-list, 
+.moves-list, 
+.abilities-list{ 
   display: flex;
   flex-direction: row; 
   flex-wrap: wrap; 
   margin: 0.5rem 0; 
 }
 
-.type-option { 
-  width: 30%; 
-  margin: 0.1rem 0; 
+.types-option, 
+.moves-option, 
+.abilities-option { 
+  margin: 0.2rem 0;
 }
 
-.moves-list, .abilities-list { 
-  height: 300px;
+.types-option { 
+  width: 50%; 
+}
+
+.moves-option, .abilities-option { 
   width: 100%; 
-  overflow-y: scroll; 
-  margin: 0.5rem 0; 
 }
 
 .upload-button { 
-  width: 200px; 
+  background-color: black; 
   margin: 1rem auto; 
   display: block; 
+  font-size: 1rem;
+  padding: 0.5rem;
 }
 

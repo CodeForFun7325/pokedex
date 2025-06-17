@@ -1,9 +1,9 @@
 "use client"; 
 
-import Loading from "../component/loading/loading";
+import GlobalLoading from "../component/loading/loading";
 
 export default function ReportLoading() { 
   return (
-    <Loading />
+    <GlobalLoading />
   );
 }
