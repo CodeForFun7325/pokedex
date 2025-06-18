@@ -211,7 +211,7 @@ export default function PokemonForm(
         </div>
       </div>
 
-      <button className="upload-button">Upload Data</button>
+      <button className="upload-button" onClick={handleUploadClick}>Upload Data</button>
     </>
   );
 }

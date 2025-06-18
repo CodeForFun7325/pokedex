@@ -69,3 +69,30 @@
   padding: 0.5rem;
 }
 
+@media (min-width: 992px) { 
+  .image-upload-section, 
+  .pokemon-details-section { 
+    width: 50%; 
+  }
+
+  .image-upload-form, 
+  .pokemon-details-form { 
+    width: 80%; 
+  }
+
+  .types-option { 
+    width: 33%;
+  }
+
+  .pokemon-details-form { 
+    overflow-y: scroll; 
+    height: 80vh; 
+  }
+
+}
+
+@media (min-width: 1500px) { 
+  .moves-option, .abilities-option { 
+    width: 50%; 
+  }
+}
