@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import SearchBar from "./component/search/searchbar";
 import GalleryContainer from "./component/gallery/gallerycontainer";
-import Loading from "@/app/component/loading/loading";
+import GlobalLoading from "@/app/component/loading/loading";
 
 import "./page.module.css";
 
@@ -16,7 +16,7 @@ export default async function Home({ searchParams }: { searchParams : { [key: st
     <>
       <h1>PokeDex</h1>
       <SearchBar />
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<GlobalLoading />}>
         <GalleryContainer search={searchQuery} />
       </Suspense>
     </>
