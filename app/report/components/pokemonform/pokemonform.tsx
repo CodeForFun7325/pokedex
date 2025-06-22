@@ -34,7 +34,7 @@ export default function PokemonForm(
   const maxTypes = 2; // A Pokemon can have a maximum of 2 types
   const maxAbilities = 1; // A pokemon can have a maximum of 1 ability
 
-  const [image, setImage] = useState<string | null>(null); // Image of pokemon sighting
+  const [image, setImage] = useState<Blob | null>(null); // Image of pokemon sighting
   const refFormInput = useRef<HTMLInputElement>(null); // Reference to the form input field
   const refCheckedTypes = useRef<Set<string>>(new Set()); // Reference to a set of checked types
   const refCheckedAbility = useRef<string>(""); // Reference to the checked ability
@@ -51,9 +51,10 @@ export default function PokemonForm(
     const file = e.target.files?.[0]; 
 
     if (file) { 
-      const reader = new FileReader(); 
-      reader.onloadend = () => setImage(reader.result as string); 
-      reader.readAsDataURL(file); 
+      // const reader = new FileReader(); 
+      // reader.onloadend = () => setImage(reader.result as string); 
+      // reader.readAsDataURL(file); 
+      setImage(file); 
     }
   }
 
@@ -147,6 +148,31 @@ export default function PokemonForm(
    */
   const handleUploadClick = () => { 
 
+    if (refFormInput.current === null || refFormInput.current.value === "") { 
+      alert("Please enter a name for this pokemon form");
+      return; 
+    }
+
+    if (refCheckedAbility.current === "") {
+      alert("Please select an ability for this pokemon");
+      return;
+    }
+
+    if (refCheckedMoves.current.size === 0) {
+      alert("Please select at least one move for this pokemon");
+      return;
+    }
+
+    if (refCheckedTypes.current.size === 0) {
+      alert("Please select at least one type for this pokemon");
+      return;
+    }
+
+    if (image === null) {
+      alert("Please upload an image for this pokemon");
+      return;
+    }
+
     const pokemonObject : Pokemon = { 
       name: pokemonName, 
       type1: [...refCheckedTypes.current].length > 0 ? [...refCheckedTypes.current][0] : "", 
@@ -156,7 +182,7 @@ export default function PokemonForm(
       abilities: [refCheckedAbility.current], 
       stats: [], 
       moves: [...refCheckedMoves.current], 
-      sprites: {}
+      sprites: { image }
     }
 
     PostPokemonSighting(pokemonObject);
@@ -192,18 +218,18 @@ export default function PokemonForm(
             <input ref={refFormInput} id="form" type="text" name="form"/>
             <br /> 
             
-            <label>Types: </label>
+            <h3>Types: </h3>
             <div className="types-list">
               {typeCheckboxes}
             </div>
             <br />
 
-            <label>Abilities: </label>
+            <h3>Abilities: </h3>
             <div className="abilities-list">
               {abilityCheckboxes}
             </div>
 
-            <label>Moves:</label>
+            <h3>Moves:</h3>
             <div className="moves-list">
               {movesCheckboxes}
             </div> 
