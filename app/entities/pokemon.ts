@@ -9,7 +9,7 @@ export default interface Pokemon {
   abilities: string[];
   stats: Stats[];
   moves: string[];
-  sprites: { image: Blob };
+  sprites: { image: string | undefined };
 }
 
 export interface PokemonListResponse {

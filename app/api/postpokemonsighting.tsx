@@ -1,11 +1,82 @@
 "use server"; 
-import { CosmosClient, SqlQuerySpec } from "@azure/cosmos";
-import { BlobClient, BlobServiceClient, ContainerClient } from "@azure/storage-blob";
+import { Container, CosmosClient, SqlQuerySpec } from "@azure/cosmos";
+import { BlobServiceClient, ContainerClient, ContainerSASPermissions, generateBlobSASQueryParameters, SASProtocol, BlobSASSignatureValues } from "@azure/storage-blob";
 import { DefaultAzureCredential } from "@azure/identity";
 
 import * as dotenv from  "dotenv"; 
 
 import Pokemon from "../entities/pokemon";
+
+async function FetchDatabaseContainer() : Promise<Container> { 
+  
+  dotenv.config({path: ".env.development.local"}); 
+  
+  // Initialize cosmos db and storage account endpoints
+  const dbEndpoint = `https://${process.env.AZURE_DB_NAME}.documents.azure.com:443/`;
+  
+  // Create new database and storage client. These client objects will be used to interact with the database and storage account
+  const client = new CosmosClient({ endpoint: dbEndpoint, aadCredentials: new DefaultAzureCredential() });
+  
+  // Fetch pokdex-db database 
+  const pokedexDb= client.database("pokedex-db");
+  
+  // Fetch sightings container - in cosmos db, a container is a collection of items
+  // Similar to how a table is a collection of rows in a relational database
+  const sightingsContainer = pokedexDb.container("Sightings");
+  
+  return sightingsContainer; 
+}
+
+
+async function InitializeBlobContainerClients() : Promise<ContainerClient>{ 
+  
+  dotenv.config({path: ".env.development.local"}); 
+  
+  // Get environment variables
+  const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
+  const containerName = process.env.AZURE_STORAGE_BLOB_CONTAINER_NAME
+  
+  // Initialize storage endpoint
+  const storageEndpoint = `https://${accountName}.blob.core.windows.net/`; 
+  
+  // Initialize time limit variables
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+  const NOW = new Date(); 
+  
+  // Initialize start and end dates for delegation key;
+  const ONE_DAY_BEFORE = new Date(NOW.valueOf() - ONE_DAY);
+  const ONE_DAY_AFTER = new Date(NOW.valueOf() + ONE_DAY);
+  
+  // Initialize blob service client. This client object will allow us to interact 
+  // with the blob service within our storage account
+  const blobServiceClient = new BlobServiceClient(storageEndpoint, new DefaultAzureCredential());
+  
+  // Retrieve user delegation key
+  const userDelegationKey = await blobServiceClient.getUserDelegationKey(ONE_DAY_BEFORE, ONE_DAY_AFTER); 
+  
+  // Initialize SAS token options
+  const sasOptions : BlobSASSignatureValues = { 
+    containerName: containerName ?? "", 
+    permissions: ContainerSASPermissions.parse("rcwl"),
+    startsOn: ONE_DAY_BEFORE, 
+    expiresOn: ONE_DAY_AFTER, 
+    protocol: SASProtocol.HttpsAndHttp
+  };
+  
+  // Initialize SAS token
+  const sasToken = generateBlobSASQueryParameters(
+    sasOptions, 
+    userDelegationKey, 
+    accountName ?? ""
+  ).toString(); 
+  
+  // Initialize container client 
+  // Initialize container client using SAS token url 
+  const containerEndpoint = `https://${accountName}.blob.core.windows.net/${containerName}?${sasToken}`;
+  const containerClient = new ContainerClient(containerEndpoint);
+  
+  return containerClient;
+}
 
 
 //az cosmosdb sql role assignment create --account-name pokedex-db-account --resource-group pokedex-rg --scope "/" --principal-id 6418cc17-1ba6-46bd-90cc-24bfb6788017 --role-definition-id "00000000-0000-0000-0000-000000000002"
@@ -14,43 +85,8 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
 
   dotenv.config({path: ".env.development.local"}); 
 
-  // Initialize cosmos db and storage account endpoints
-  const dbEndpoint = `https://${process.env.AZURE_DB_NAME}.documents.azure.com:443/`;
-  const storageEndpoint = `https://${process.env.AZURE_STORAGE_NAME}.blob.core.windows.net/`; 
-  const containerEndpoint = `https://${process.env.AZURE_STORAGE_NAME}.blob.core.windows.net/${process.env.AZURE_STORAGE_CONTAINER}`;
-
-  // Initialize new azure credential object
-  const credential = new DefaultAzureCredential();
-
-  // Create new database and storage client. These client objects will be used to interact with the database and storage account
-  const client = new CosmosClient({ endpoint: dbEndpoint, aadCredentials: credential });
-  const blobServiceClient = new BlobServiceClient(storageEndpoint, credential);
-
-  // Initialize blob storage account client to interact with the blob service
-  const containerClient = await blobServiceClient.getContainerClient(containerEndpoint);
-
-  console.log(containerEndpoint); 
-
-  // Create the container if it does not exist
-  try { 
-    const createContainerResponse = await containerClient.createIfNotExists();
-
-    if (createContainerResponse.succeeded) 
-      console.log("Container created successfully");
-    else 
-      console.log("Container already exists");
-
-  } catch (error) { 
-    console.log("Error creating container", error); 
-    throw error; 
-  }
-
-  // Fetch pokdex-db database 
-  const pokedexDb= client.database("pokedex-db");
-  
-  // Fetch sightings container - in cosmos db, a container is a collection of items
-  // Similar to how a table is a collection of rows in a relational database
-  const sightingsContainer = pokedexDb.container("Sightings");
+  const sightingsContainer = await FetchDatabaseContainer();
+  const containerClient: ContainerClient  = await InitializeBlobContainerClients(); 
 
   // Query for a specific pokemon sighting with the given pokemon name and form
   // We expect this to always return a single item, as each pokemon sightings are unique
@@ -77,7 +113,9 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
   // If the query returned no results, we can assume that the pokemon sighting does not exist
   // yet and we should create a new item in the container with the passed in information
   try { 
+
     if (!sighting) { 
+
       // Upload pokemon data to the database
       sightingsContainer.items.create({
         id: String(pokemonObject.id),
@@ -91,20 +129,28 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
       });
 
       // Upload pokemon image to the blob storage
-      const blockBlobClient = containerClient.getBlockBlobClient(`${pokemonObject.id}-${pokemonObject.form}`);
-      // const uploadBlobResponse = await blockBlobClient.uploadData(pokemonObject.sprites.image);
+      if (pokemonObject.sprites.image && typeof pokemonObject.sprites.image === "string") {
+        console.log("Sending data"); 
+
+        const blockBlobClient = containerClient.getBlockBlobClient(`${pokemonObject.id}-${pokemonObject.form}`);
+        await blockBlobClient.upload(pokemonObject.sprites.image, pokemonObject.sprites.image.length);
+      }
 
       return { success: true, message: "Uploaded successfully" }
     } 
     else { 
+
       return { 
         success: false, 
         message: "A pokemon sighting with this name and form already exists. Please try again with a different name or form."
       }
+      
     }
 
   } catch (error) { 
+
     // TODO: Need to add better error handling here. Probably going to be based on status code
     return { success: false, message: "There was an error uploading the data to the PokeDex"}
+
   }
 }

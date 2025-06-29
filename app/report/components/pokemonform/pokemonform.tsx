@@ -34,7 +34,7 @@ export default function PokemonForm(
   const maxTypes = 2; // A Pokemon can have a maximum of 2 types
   const maxAbilities = 1; // A pokemon can have a maximum of 1 ability
 
-  const [image, setImage] = useState<Blob | null>(null); // Image of pokemon sighting
+  const [image, setImage] = useState<string>(); // Image of pokemon sighting
   const refFormInput = useRef<HTMLInputElement>(null); // Reference to the form input field
   const refCheckedTypes = useRef<Set<string>>(new Set()); // Reference to a set of checked types
   const refCheckedAbility = useRef<string>(""); // Reference to the checked ability
@@ -51,14 +51,15 @@ export default function PokemonForm(
     const file = e.target.files?.[0]; 
 
     if (file) { 
-      // const reader = new FileReader(); 
-      // reader.onloadend = () => setImage(reader.result as string); 
-      // reader.readAsDataURL(file); 
-      setImage(file); 
+      const reader = new FileReader(); 
+      reader.onloadend = () => { 
+        setImage(reader.result as string); 
+      }; 
+      reader.readAsDataURL(file); 
     }
   }
 
-
+  console.log("image", image); 
 
   /** 
    * Stage = Initialize handle functions for checkboxes
