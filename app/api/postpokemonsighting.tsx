@@ -89,7 +89,7 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon, fileT
   const containerClient: ContainerClient  = await InitializeBlobContainerClients(); 
 
   // Query for a specific pokemon sighting with the given pokemon name and form
-  // We expect this to always return a single item, as each pokemon sightings are unique
+  // We expect this to always return a single item, as each pokemon sighting is meant to be unique
   const querySpec : SqlQuerySpec = {
     query: "SELECT * FROM Sightings s WHERE s.pokemonName = @pokemonName AND s.pokemonForm = @pokemonForm",
     parameters: [
@@ -134,6 +134,7 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon, fileT
       const imageBuffer = Buffer.from(base64ImageString, 'base64')
       const blobName = `${pokemonObject.id}-${pokemonObject.form}`;
       const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
       await blockBlobClient.upload(imageBuffer, 
                                    imageBuffer.length, {
                                    blobHTTPHeaders: {
@@ -148,7 +149,7 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon, fileT
 
       return { 
         success: false, 
-        message: "A pokemon sighting with this name and form already exists. Please try again with a different name or form."
+        message: "This form has already been reported for this pokemon. Please try again with a different pokemon or form."
       }
       
     }

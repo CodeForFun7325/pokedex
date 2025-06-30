@@ -1,6 +1,6 @@
 "use client"; 
 import React, { Suspense, useState, useRef, JSX } from 'react'; 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import ReportLoading from "@/app/report/loading"; 
 
 import PostPokemonSighting from '@/app/api/postpokemonsighting';
@@ -11,6 +11,11 @@ import './pokemonform.css';
 export default function PokemonForm(
   {moves, abilities, types} : {moves: unknown, abilities: unknown, types: unknown}
 ) { 
+
+  /**
+   * Stage: Initialize router hook
+   */
+  const route = useRouter(); 
 
   /** 
    * Stage: Initialize search params to get the pokemon name and id from the URL
@@ -186,6 +191,18 @@ export default function PokemonForm(
     }
 
     const status = await PostPokemonSighting(pokemonObject, fileType);
+
+    if (status) { 
+
+      alert(status.message); 
+
+      // If the submission was successful then we redirect the user back to the homepage
+      // Otherwise, we do nothing. We want to give the user the chance to make changes
+      if (status.success) { 
+        route.replace("/"); 
+      }
+
+    }
   }
 
   
@@ -193,7 +210,7 @@ export default function PokemonForm(
    * Stage: Render the Pokemon Form
    */
   return (
-    <Suspense fallback={<ReportLoading />}>
+    <>
       <div className="report-form">
 
         {/* Image Upload Section */}
@@ -238,6 +255,6 @@ export default function PokemonForm(
       </div>
 
       <button className="upload-button" onClick={handleUploadClick}>Upload Data</button>
-    </Suspense>
+    </>
   );
 }
