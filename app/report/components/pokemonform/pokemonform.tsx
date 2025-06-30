@@ -1,6 +1,7 @@
 "use client"; 
-import React, { useEffect, useState, useRef, JSX } from 'react'; 
+import React, { Suspense, useState, useRef, JSX } from 'react'; 
 import { useSearchParams } from 'next/navigation';
+import ReportLoading from "@/app/report/loading"; 
 
 import PostPokemonSighting from '@/app/api/postpokemonsighting';
 import Pokemon from '@/app/entities/pokemon';
@@ -34,13 +35,12 @@ export default function PokemonForm(
   const maxTypes = 2; // A Pokemon can have a maximum of 2 types
   const maxAbilities = 1; // A pokemon can have a maximum of 1 ability
 
-  const [image, setImage] = useState<string>(); // Image of pokemon sighting
+  const [image, setImage] = useState<string>(""); // Image of pokemon sighting
+  const [fileType, setFileType] = useState<string>(""); 
   const refFormInput = useRef<HTMLInputElement>(null); // Reference to the form input field
   const refCheckedTypes = useRef<Set<string>>(new Set()); // Reference to a set of checked types
   const refCheckedAbility = useRef<string>(""); // Reference to the checked ability
   const refCheckedMoves = useRef<Set<string>>(new Set()); // Refernece to a set of checked moves
-
-
 
   /** 
    * Stage: Initialize the image upload functionality
@@ -54,12 +54,11 @@ export default function PokemonForm(
       const reader = new FileReader(); 
       reader.onloadend = () => { 
         setImage(reader.result as string); 
+        setFileType(file.type); 
       }; 
       reader.readAsDataURL(file); 
     }
   }
-
-  console.log("image", image); 
 
   /** 
    * Stage = Initialize handle functions for checkboxes
@@ -147,7 +146,7 @@ export default function PokemonForm(
    * 
    * It will then call the PostPokemonSighting function to upload the pokemon sighting data to our azure cosmos db
    */
-  const handleUploadClick = () => { 
+  const handleUploadClick = async () => { 
 
     if (refFormInput.current === null || refFormInput.current.value === "") { 
       alert("Please enter a name for this pokemon form");
@@ -186,7 +185,7 @@ export default function PokemonForm(
       sprites: { image }
     }
 
-    PostPokemonSighting(pokemonObject);
+    const status = await PostPokemonSighting(pokemonObject, fileType);
   }
 
   
@@ -194,7 +193,7 @@ export default function PokemonForm(
    * Stage: Render the Pokemon Form
    */
   return (
-    <>
+    <Suspense fallback={<ReportLoading />}>
       <div className="report-form">
 
         {/* Image Upload Section */}
@@ -239,6 +238,6 @@ export default function PokemonForm(
       </div>
 
       <button className="upload-button" onClick={handleUploadClick}>Upload Data</button>
-    </>
+    </Suspense>
   );
 }

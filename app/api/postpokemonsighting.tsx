@@ -81,7 +81,7 @@ async function InitializeBlobContainerClients() : Promise<ContainerClient>{
 
 //az cosmosdb sql role assignment create --account-name pokedex-db-account --resource-group pokedex-rg --scope "/" --principal-id 6418cc17-1ba6-46bd-90cc-24bfb6788017 --role-definition-id "00000000-0000-0000-0000-000000000002"
 
-export default async function PostPokemonSighting(pokemonObject : Pokemon) {
+export default async function PostPokemonSighting(pokemonObject : Pokemon, fileType : string) {
 
   dotenv.config({path: ".env.development.local"}); 
 
@@ -127,14 +127,20 @@ export default async function PostPokemonSighting(pokemonObject : Pokemon) {
         abilities: pokemonObject.abilities,
         moves: pokemonObject.moves
       });
-
+      
       // Upload pokemon image to the blob storage
-      if (pokemonObject.sprites.image && typeof pokemonObject.sprites.image === "string") {
-        console.log("Sending data"); 
+      // Will need to have Storage Blob Data Reader and Storage Blob Data Contributor role to have this work
+      const base64ImageString = pokemonObject.sprites.image?.replace(/^data:image\/\w+;base64,/, '') ?? "";
+      const imageBuffer = Buffer.from(base64ImageString, 'base64')
+      const blobName = `${pokemonObject.id}-${pokemonObject.form}`;
+      const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+      await blockBlobClient.upload(imageBuffer, 
+                                   imageBuffer.length, {
+                                   blobHTTPHeaders: {
+                                     blobContentType: fileType
+                                   }
+                                 }); 
 
-        const blockBlobClient = containerClient.getBlockBlobClient(`${pokemonObject.id}-${pokemonObject.form}`);
-        await blockBlobClient.upload(pokemonObject.sprites.image, pokemonObject.sprites.image.length);
-      }
 
       return { success: true, message: "Uploaded successfully" }
     } 
