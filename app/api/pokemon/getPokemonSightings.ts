@@ -8,15 +8,26 @@ import { statsDecodeMap } from '@/app/entities/stats';
 export default async function GetPokemonSightings(pokemon: string) {
   if (pokemon === "") return; 
 
+  const pokemonForms: Pokemon[] = [];
+  
+  const data = await GetPokedexData(pokemon); 
+
+  pokemonForms.push(data.p);
+
+  return { pokemonForms }; 
+}
+
+async function GetPokedexData(pokemon: string) { 
   const P = new Pokedex(); 
   
   let data = await P.getPokemonByName(pokemon); 
 
   /** Stage: Parse out pokemon abilities */
-  let pokemonAbilities : string[] = []; 
-  if (data && data.abiliites && Array.isArray(data.abilities)) 
+  let pokemonAbilities : string[] = [];  
+  if (data && data.abilities && Array.isArray(data.abilities)) 
 
     pokemonAbilities = data.abilities.map((ability:unknown) => { 
+
       if (ability && ability instanceof Object && 
         "ability" in ability && ability.ability instanceof Object && 
         "name" in ability.ability && typeof ability.ability.name === "string")
@@ -25,7 +36,8 @@ export default async function GetPokemonSightings(pokemon: string) {
 
       else return "";
     })
-  
+
+  console.log("abilities", pokemonAbilities); 
 
   /** Stage: Parse out pokemon moves */
   let pokemonMoves : string[] = [];

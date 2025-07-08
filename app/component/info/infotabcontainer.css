@@ -1,0 +1,27 @@
+.info-tab-container { 
+    position: fixed;
+  background-color: black;
+  left: 50%; 
+  top: 50%;   
+  transform: translate(-50%, -50%);
+  width: 90%; 
+  height: 90%; 
+  z-index: 100000; 
+  display: block; 
+  opacity: 0.98;
+  border: 2px solid #141414;
+  padding: 2rem; 
+  display: flex; 
+  flex-direction: row;
+  flex-wrap: wrap; 
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.close-btn { 
+  position: absolute; 
+  font-size: 2rem; 
+  right: 10px; 
+  top: 0; 
+  cursor: default; 
+}

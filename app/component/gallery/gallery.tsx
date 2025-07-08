@@ -3,7 +3,7 @@
 /// Component Imports
 import React, { useState, useCallback } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Info from '../info/info';
+import InfoTabContainer from "../info/infotabcontainer";
 
 /// Hook Imports
 import usePokemonSelect from '../../hooks/usePokemonSelect';
@@ -45,7 +45,7 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
       <QueryClientProvider client={queryClient}>
         {
           showInfo && 
-          <Info pokemon={selectedPokemon} handleCloseInfo={handlePokemonSelect} />
+          <InfoTabContainer pokemon={selectedPokemon} handleCloseInfo={handlePokemonSelect} />
         }
       </QueryClientProvider>
     </div>
