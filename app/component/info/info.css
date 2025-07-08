@@ -58,6 +58,12 @@
   background-color: black;
 }
 
+.info-image { 
+  width: 250px; 
+  height: 250px; 
+  object-position: center;
+}
+
 .report-btn:hover { 
   background-color: white; 
   color: black; 
@@ -70,5 +76,10 @@ h2 {
 @media (min-width: 992px) { 
   .pokemon-info, .pokemon-attributes { 
     width: 50%; 
+  }
+
+  .info-image { 
+    width: 300px; 
+    height: 300px; 
   }
 }

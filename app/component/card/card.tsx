@@ -5,7 +5,7 @@ import "./card.css";
 
 function Card({name, url, imageSource, onClick} : CardData) {  
   return (
-    <div onClick={() => onClick(url)} className="card"> 
+    <div onClick={() => onClick(name)} className="card"> 
       <img className="pokemon-image" src={imageSource} alt={name}/>
       <h2 className="pokemon-name">{name}</h2>
     </div>

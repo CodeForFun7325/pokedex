@@ -1,40 +1,33 @@
-"use client"; 
-import { useQuery } from '@tanstack/react-query';
+"use server";
 
+import Pokedex from 'pokedex-promise-v2';
 import Pokemon from '@/app/entities/pokemon';
 import Stats from '@/app/entities/stats';
 import { statsDecodeMap } from '@/app/entities/stats';
 
-export default function useFetchPokemon(url: string) { 
+export default async function GetPokemonSightings(pokemon: string) {
+  if (pokemon === "") return; 
 
-  if (url === "") 
-    return; 
+  const P = new Pokedex(); 
+  
+  let data = await P.getPokemonByName(pokemon); 
 
-  const { data } = useQuery({
-    queryKey: [url, url], 
-    queryFn: async () => { 
-      const response = await fetch(url); 
-      if (!response.ok) { 
-        throw new Error('Network response was not ok'); 
-      } 
-      return response.json(); 
-    }, 
-    refetchOnWindowFocus: false, // Prevent refetching on window focus
-  }); 
-
-
+  /** Stage: Parse out pokemon abilities */
   let pokemonAbilities : string[] = []; 
-  if (data && data.abilities && Array.isArray(data.abilities)) 
-    
-    pokemonAbilities = data.abilities.map((ability:unknown)  => { 
-      if (ability && ability instanceof Object && 
-          "ability" in ability && ability.ability instanceof Object && 
-          "name" in ability.ability && typeof ability.ability.name === "string" ) 
-         
-          return ability.ability.name
-        
-  }); 
+  if (data && data.abiliites && Array.isArray(data.abilities)) 
 
+    pokemonAbilities = data.abilities.map((ability:unknown) => { 
+      if (ability && ability instanceof Object && 
+        "ability" in ability && ability.ability instanceof Object && 
+        "name" in ability.ability && typeof ability.ability.name === "string")
+
+        return ability.ability.name
+
+      else return "";
+    })
+  
+
+  /** Stage: Parse out pokemon moves */
   let pokemonMoves : string[] = [];
   if (data && data.moves && Array.isArray(data.moves)) 
     
@@ -44,10 +37,13 @@ export default function useFetchPokemon(url: string) {
           "name" in move.move && typeof move.move.name === "string")
           
         return move.move.name
+
+      else return ""; 
   }); 
 
+  /** Stage: Parse out pokemon stats */
   let pokemonStats : Stats[] = [];
-
+  
   if (data && data.stats && Array.isArray(data.stats)) { 
 
     pokemonStats = data.stats.map((stat: unknown) => { 
@@ -72,8 +68,8 @@ export default function useFetchPokemon(url: string) {
       return pokemonStat;
     }); 
   }
-  
-  // parse out only the data we need
+
+  /** Stage: Initialize and return a pokemon object with all the data that we parsed */
   const p : Pokemon = { 
     name: data?.name || '', 
     type1: data?.types[0]?.type?.name || '', 
@@ -83,7 +79,7 @@ export default function useFetchPokemon(url: string) {
     id: data?.id || 0, 
     stats: pokemonStats || [],
     moves:  pokemonMoves,
-    sprites: data?.sprites.other["official-artwork"] || {}
+    sprites: { image: data?.sprites.other["official-artwork"]["front_default"] || ""}
   }
   
   return { p }; 

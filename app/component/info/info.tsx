@@ -1,30 +1,31 @@
 "use client"; 
 import Link from "next/link";
-import ImageCarousel from "./imagecarousel";
 import StatsGraph from "./statgraph";
-import GlobalLoading from "../loading/loading";
+import { useEffect, useState } from "react";
 
 // Custom Hooks
-import useFetchPokemon from "../../hooks/useFetchPokemon";
+import GetPokemonSightings from "@/app/api/pokemon/getpokemonsightings";
 
 /// CSS Styling
 import "./info.css"; 
 
 type infoProps = { 
-  url: string;
+  pokemon: string;
   handleCloseInfo: (url: string) => void; 
 }
 
 // Entities
 import Pokemon from "../../entities/pokemon";
 
-function Info({ url, handleCloseInfo} : infoProps) 
+function Info({ pokemon, handleCloseInfo} : infoProps) 
 {
 
   /** Stage: Call custom hook to fetch data */
-  const data = useFetchPokemon(url);
-  const p : Pokemon | undefined = data?.p;
+  const [data, setData] = useState<Pokemon>(); 
 
+  useEffect(() => { 
+    let pokemonData = GetPokemonSightings(pokemon).then(res => setData(res?.p));
+  }, []);
 
   /** Stage = Render the info card once data has been returned */
   return (
@@ -33,26 +34,27 @@ function Info({ url, handleCloseInfo} : infoProps)
       <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
 
       {/* Image carousel */}
-      <div aria-label={`Images of ${p?.name}`} className="pokemon-attributes"> 
-        <h2>{p?.name.toUpperCase()}</h2>
-        <Link className="report-btn" href={`/report?pokemon=${p?.name}&id=${p?.id}`}>Report Sighting</Link>
+      <div aria-label={`Images of ${data?.name}`} className="pokemon-attributes"> 
+        <h2>{data?.name.toUpperCase()}</h2>
+        <Link className="report-btn" href={`/report?pokemon=${data?.name}&id=${data?.id}`}>Report Sighting</Link>
         <br />
-        <ImageCarousel sprites={p?.sprites || {}} />
-        <StatsGraph stats={p?.stats || []}/>
+        {/* <ImageCarousel sprites={data?.sprites || {}} /> */}
+        <img className="info-image" src={data?.sprites.image} alt="pokemon image" />
+        <StatsGraph stats={data?.stats || []}/>
       </div>
 
       {/* Information section of card */}
-      <div aria-label={`Information on ${p?.name}`} className="pokemon-info">
+      <div aria-label={`Information on ${data?.name}`} className="pokemon-info">
         
         <br />
 
-        <p><strong>Types: </strong>  {p?.type1}{p?.type2 == "" ? "" : ", "}{p?.type2}</p>
+        <p><strong>Types: </strong>  {data?.type1}{data?.type2 == "" ? "" : ", "}{data?.type2}</p>
         <br />
 
         <p><strong>Abilities:</strong></p>
         <ul className="abilities"> 
           {
-            p?.abilities.map((value, index) => { 
+            data?.abilities.map((value, index) => { 
               return(
                 <li key={index}>{value}</li>
               ); 
@@ -65,7 +67,7 @@ function Info({ url, handleCloseInfo} : infoProps)
         <p><strong>Moves:</strong></p>
         <ul className="moves"> 
           {
-            p?.moves.map((value, index) => { 
+            data?.moves.map((value, index) => { 
               return(
                 <li key={index}>{value}</li>
               ); 

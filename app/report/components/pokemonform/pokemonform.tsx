@@ -3,7 +3,7 @@ import React, { Suspense, useState, useRef, JSX } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ReportLoading from "@/app/report/loading"; 
 
-import PostPokemonSighting from '@/app/api/postpokemonsighting';
+import PostPokemonSighting from '@/app/api/pokemon/postPokemonSightings';
 import Pokemon from '@/app/entities/pokemon';
 
 import './pokemonform.css';

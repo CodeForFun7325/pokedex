@@ -19,7 +19,7 @@ const queryClient = new QueryClient();
 
 export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] }) { 
   
-  const { selectedPokemonUrl, showInfo, handlePokemonSelect } = usePokemonSelect();
+  const { selectedPokemon, showInfo, handlePokemonSelect } = usePokemonSelect();
 
   /** Stage: Map the list of pokemons into card components */
   const PokemonCards =  pokemons.map((pokemon) => { 
@@ -45,7 +45,7 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
       <QueryClientProvider client={queryClient}>
         {
           showInfo && 
-          <Info url={selectedPokemonUrl} handleCloseInfo={handlePokemonSelect} />
+          <Info pokemon={selectedPokemon} handleCloseInfo={handlePokemonSelect} />
         }
       </QueryClientProvider>
     </div>
