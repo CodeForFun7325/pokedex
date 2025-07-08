@@ -1,10 +1,11 @@
 "use client"; 
-import React, { Suspense, useState, useRef, JSX } from 'react'; 
+import React, { useState, useRef, JSX } from 'react'; 
 import { useSearchParams, useRouter } from 'next/navigation';
-import ReportLoading from "@/app/report/loading"; 
+
 
 import PostPokemonSighting from '@/app/api/pokemon/postPokemonSightings';
 import Pokemon from '@/app/entities/pokemon';
+import FormLoading from '../loading/formloading';
 
 import './pokemonform.css';
 
@@ -42,6 +43,7 @@ export default function PokemonForm(
 
   const [image, setImage] = useState<string>(""); // Image of pokemon sighting
   const [fileType, setFileType] = useState<string>(""); 
+  const [loadingState, setLoadingState] = useState<boolean>(false); // Set loading state 
   const refFormInput = useRef<HTMLInputElement>(null); // Reference to the form input field
   const refCheckedTypes = useRef<Set<string>>(new Set()); // Reference to a set of checked types
   const refCheckedAbility = useRef<string>(""); // Reference to the checked ability
@@ -190,7 +192,9 @@ export default function PokemonForm(
       sprites: { image }
     }
 
+    setLoadingState(true); 
     const status = await PostPokemonSighting(pokemonObject, fileType);
+    setLoadingState(false); 
 
     if (status) { 
 
@@ -204,15 +208,15 @@ export default function PokemonForm(
 
     }
   }
-
   
   /**
    * Stage: Render the Pokemon Form
    */
   return (
     <>
+      { loadingState && <FormLoading />}
+      <h1>Report Pokemon Sighting</h1>
       <div className="report-form">
-
         {/* Image Upload Section */}
         <div className="image-upload-section">
           <form className="image-upload-form">

@@ -1,4 +1,4 @@
-import Stats from "./stats";
+import Stats from "@/app/entities/stats";
 
 export default interface Pokemon { 
   name: string;

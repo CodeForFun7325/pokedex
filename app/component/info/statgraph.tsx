@@ -1,7 +1,7 @@
 "use client"; 
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from "recharts";
 
-import Stats from "./../../entities/stats";
+import Stats from "../../entities/stats";
 import "./statgraph.css";
 
 export default function StatsGraph({ stats } :{stats : Stats[] | []}) { 

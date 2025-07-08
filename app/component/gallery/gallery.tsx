@@ -13,7 +13,7 @@ import "./gallery.css";
 
 /// Entities
 import Card from '../card/card';
-import { PokemonListResponse } from './../../entities/pokemon';
+import { PokemonListResponse } from '../../entities/pokemon';
 
 const queryClient = new QueryClient(); 
 

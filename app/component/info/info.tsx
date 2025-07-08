@@ -4,7 +4,8 @@ import StatsGraph from "./statgraph";
 import { useEffect, useState } from "react";
 
 // Custom Hooks
-import GetPokemonSightings from "@/app/api/pokemon/getpokemonsightings";
+import GetPokemonSightings from "@/app/api/pokemon/getPokemonSightings";
+import GlobalLoading from "./../loading/loading"; 
 
 /// CSS Styling
 import "./info.css"; 
@@ -26,6 +27,13 @@ function Info({ pokemon, handleCloseInfo} : infoProps)
   useEffect(() => { 
     let pokemonData = GetPokemonSightings(pokemon).then(res => setData(res?.p));
   }, []);
+
+  if (!data) 
+    return (
+      <div className="info-container"> 
+        <GlobalLoading />
+      </div>
+    )
 
   /** Stage = Render the info card once data has been returned */
   return (

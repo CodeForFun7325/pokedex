@@ -10,7 +10,6 @@ export default async function ReportCiting() {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <h1>Report Pokemon Sighting</h1>
       <PokemonForm moves={moves} abilities={abilities} types={types}/>
     </Suspense>
   ); 

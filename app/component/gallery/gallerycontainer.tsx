@@ -2,7 +2,7 @@ import Pokedex from 'pokedex-promise-v2';
 import Gallery from './gallery';
 
 // Entities
-import { PokemonListResponse } from './../../entities/pokemon';
+import { PokemonListResponse } from '../../entities/pokemon';
 
 export default async function GalleryContainer({ search } : { search: string | ""}) {
   const P = new Pokedex();
