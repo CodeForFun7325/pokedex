@@ -116,18 +116,6 @@ export default async function PostPokemonSighting(pokemonObject: Pokemon, fileTy
 
     if (!sighting) {
 
-      // Upload pokemon data to the database
-      sightingsContainer.items.create({
-        id: String(pokemonObject.id),
-        pokemonId: pokemonObject.id,
-        pokemonName: pokemonObject.name,
-        pokemonForm: pokemonObject.form,
-        pokemonType1: pokemonObject.type1,
-        pokemonType2: pokemonObject.type2,
-        abilities: pokemonObject.abilities,
-        moves: pokemonObject.moves
-      });
-
       // Upload pokemon image to the blob storage
       // Will need to have Storage Blob Data Reader and Storage Blob Data Contributor role to have this work
       const base64ImageString = pokemonObject.sprites.image?.replace(/^data:image\/\w+;base64,/, '') ?? "";
@@ -141,7 +129,19 @@ export default async function PostPokemonSighting(pokemonObject: Pokemon, fileTy
           blobContentType: fileType
         }
       });
-
+      
+      // Upload pokemon data to the database
+      sightingsContainer.items.create({
+        id: String(pokemonObject.id),
+        pokemonId: pokemonObject.id,
+        pokemonName: pokemonObject.name,
+        pokemonForm: pokemonObject.form,
+        pokemonType1: pokemonObject.type1,
+        pokemonType2: pokemonObject.type2,
+        abilities: pokemonObject.abilities,
+        moves: pokemonObject.moves, 
+        sprites: { image: blockBlobClient.url }
+      });
 
       return { success: true, message: "Uploaded successfully" }
     }
