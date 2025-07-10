@@ -7,6 +7,7 @@ import GetPokemonSightings from "@/app/api/pokemon/getPokemonSightings";
 import Info from "./info"; 
 
 import "./infotabcontainer.css"; 
+import Pokemon from "@/app/entities/pokemon";
 
 type infoProps = { 
   pokemon: string;
@@ -15,39 +16,42 @@ type infoProps = {
 
 export default function InfoTabContainer({pokemon, handleCloseInfo} : infoProps) { 
 
-  const infoContainers = new Map<string, JSX.Element>(); 
+  const [infoContainers, setInfoContainers] = useState<Map<string, JSX.Element>>(new Map()); 
   const [selectedForm, setSelectedForm] = useState<string>("Base"); 
-  const forms:string[] = []; 
+  const [formOptions, setFormOptions] = useState<string[]>([]); 
 
   useEffect(() => { 
     const fetchData = async () => { 
-      let pokemonData = await GetPokemonSightings(pokemon).then(res => res?.pokemonForms); 
-      console.log("pokemon data", pokemonData); 
+      let pokemonData : Pokemon[] | undefined = await GetPokemonSightings(pokemon).then(res => res?.pokemonData); 
+      let infoElements:Map<string, JSX.Element> = new Map(); 
+      let forms:string[] = [];
 
-      pokemonData?.forEach(data => { 
-        forms.push(data?.form);
-        infoContainers.set(data?.form, <Info pokemon={data} />)
+      pokemonData?.forEach(data  => { 
+        forms.push(data?.form == "" ? "Base" : data.form);
+        infoElements.set(data?.form == "" ? "Base" : data.form, <Info pokemon={data} />)
       });
+
+      setFormOptions(forms); 
+      setInfoContainers(infoElements); 
     }
 
     fetchData(); 
   }, []);
 
-  const handleSelect = (e : React.ChangeEvent<HTMLOptionElement>) => { 
+  const handleChange = (e : React.ChangeEvent<HTMLSelectElement>) => { 
     if (e.target.value === "")
       setSelectedForm("Base");
     else 
       setSelectedForm(e.target.value); 
   }
 
-  console.log("forms", forms); 
-
   return (
     <div className="info-tab-container">
       <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
-      <select>
+      <label></label>
+      <select className="form-option" onChange={handleChange}>
         {
-          forms.map((form) => {
+          formOptions.map((form) => {
             return (
               <option key={form} value={form}>
                 {form}
@@ -56,6 +60,9 @@ export default function InfoTabContainer({pokemon, handleCloseInfo} : infoProps)
           })
         }
       </select>
+      {
+        infoContainers.get(selectedForm)
+      }
       
     </div>
   )

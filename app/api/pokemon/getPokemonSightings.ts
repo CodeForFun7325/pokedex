@@ -4,17 +4,20 @@ import Pokedex from 'pokedex-promise-v2';
 import Pokemon from '@/app/entities/pokemon';
 import Stats from '@/app/entities/stats';
 import { statsDecodeMap } from '@/app/entities/stats';
+import { FetchDatabaseContainer } from '@/app/util/cosmosdb';
+import { SqlQuerySpec } from "@azure/cosmos";
 
 export default async function GetPokemonSightings(pokemon: string) {
-  if (pokemon === "") return; 
-
-  const pokemonForms: Pokemon[] = [];
   
-  const data = await GetPokedexData(pokemon); 
+  if (pokemon === "") return; 
+  
+  const baseData = await GetPokedexData(pokemon); 
 
-  pokemonForms.push(data.p);
+  const userSightings : Pokemon[] = await GetUserSightings(pokemon); 
 
-  return { pokemonForms }; 
+  const pokemonData : Pokemon[] = [baseData?.p, ...userSightings]
+
+  return { pokemonData }; 
 }
 
 async function GetPokedexData(pokemon: string) { 
@@ -36,8 +39,6 @@ async function GetPokedexData(pokemon: string) {
 
       else return "";
     })
-
-  console.log("abilities", pokemonAbilities); 
 
   /** Stage: Parse out pokemon moves */
   let pokemonMoves : string[] = [];
@@ -95,4 +96,41 @@ async function GetPokedexData(pokemon: string) {
   }
   
   return { p }; 
+}
+
+async function GetUserSightings(pokemon:string) { 
+  const sightingsContainer = await FetchDatabaseContainer(); 
+
+  pokemon = pokemon ? pokemon.charAt(0).toUpperCase() + pokemon.slice(1) : ""
+
+  const querySpec: SqlQuerySpec = {
+    query: "SELECT * FROM Sightings s WHERE s.pokemonName = @pokemonName",
+    parameters: [
+      {
+        name: "@pokemonName",
+        value: pokemon 
+      }
+    ]
+  };
+
+  const sightingInformation = await sightingsContainer.items.query(querySpec).fetchAll(); 
+  const sightings = sightingInformation.resources;
+
+  const pokemonObject : Pokemon[] = sightings.map((sighting) => { 
+    
+    return { 
+      name: sighting.pokemonName, 
+      type1: sighting.pokemonType1, 
+      type2: sighting.pokemonType2, 
+      form: sighting.pokemonForm, 
+      id: sighting.pokemonId, 
+      abilities: sighting.abilities, 
+      stats: sighting.stats, 
+      moves: sighting.moves, 
+      sprites: sighting.sprites
+    }
+
+  });
+
+  return pokemonObject; 
 }
