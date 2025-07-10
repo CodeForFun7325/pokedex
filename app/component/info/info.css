@@ -1,22 +1,13 @@
-/* .info-container {
-  position: fixed;
+.info-container {
   background-color: black;
-  left: 50%; 
-  top: 50%;   
-  transform: translate(-50%, -50%);
   width: 90%; 
   height: 90%; 
-  z-index: 100000; 
-  display: block; 
   opacity: 0.98;
-  border: 2px solid #141414;
-  padding: 2rem; 
   display: flex; 
   flex-direction: row;
   flex-wrap: wrap; 
   justify-content: center;
-  overflow-y: scroll; 
-} */
+}
 
 .pokemon-info { 
   width: 100%; 
@@ -46,6 +37,7 @@
   width: 250px; 
   height: 250px; 
   object-position: center;
+  object-fit:cover
 }
 
 .report-btn:hover { 

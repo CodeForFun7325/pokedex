@@ -1,5 +1,5 @@
 .info-tab-container { 
-    position: fixed;
+  position: fixed;
   background-color: black;
   left: 50%; 
   top: 50%;   
@@ -11,10 +11,6 @@
   opacity: 0.98;
   border: 2px solid #141414;
   padding: 2rem; 
-  display: flex; 
-  flex-direction: row;
-  flex-wrap: wrap; 
-  justify-content: center;
   overflow-y: scroll;
 }
 
