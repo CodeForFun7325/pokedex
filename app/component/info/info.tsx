@@ -1,10 +1,6 @@
 "use client"; 
 import Link from "next/link";
 import StatsGraph from "./statgraph";
-import { useEffect, useState } from "react";
-
-// Custom Hooks
-import GetPokemonSightings from "@/app/api/pokemon/getPokemonSightings";
 
 /// CSS Styling
 import "./info.css"; 
