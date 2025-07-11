@@ -42,11 +42,24 @@ export default function PokemonForm(
   const maxAbilities = 1; // A pokemon can have a maximum of 1 ability
 
   const [image, setImage] = useState<string>(""); // Image of pokemon sighting
-  const [fileType, setFileType] = useState<string>(""); 
-  const [loadingState, setLoadingState] = useState<boolean>(false); // Set loading state 
+
+  const [fileType, setFileType] = useState<string>(""); // Set the file type. This is used to post files to azure storage account
+
+  const [loadingState, setLoadingState] = useState<boolean>(false); // If true, application will display a loading component
+
   const refFormInput = useRef<HTMLInputElement>(null); // Reference to the form input field
+
+  const refHP = useRef<HTMLInputElement>(null); 
+  const refAttack = useRef<HTMLInputElement>(null); 
+  const refDefense = useRef<HTMLInputElement>(null); 
+  const refSpecialAttack = useRef<HTMLInputElement>(null); 
+  const refSpecialDefense = useRef<HTMLInputElement>(null); 
+  const refSpeed = useRef<HTMLInputElement>(null); 
+  
   const refCheckedTypes = useRef<Set<string>>(new Set()); // Reference to a set of checked types
+  
   const refCheckedAbility = useRef<string>(""); // Reference to the checked ability
+  
   const refCheckedMoves = useRef<Set<string>>(new Set()); // Refernece to a set of checked moves
 
   /** 
@@ -103,7 +116,6 @@ export default function PokemonForm(
       refCheckedAbility.current = ""; // Reset the checked ability
     }
   }
-
 
   /**
    * Stage: Sort the types, abilities, and moves alphabetically and map them to checkbox elements
@@ -187,7 +199,14 @@ export default function PokemonForm(
       form: refFormInput.current?.value || "", 
       id: pokemonId, 
       abilities: [refCheckedAbility.current], 
-      stats: [], 
+      stats: [
+        {base_stat: parseInt(refHP.current?.value || "0"), statDecode: "HP"},
+        {base_stat: parseInt(refAttack.current?.value || "0"), statDecode: "Atk"},
+        {base_stat: parseInt(refDefense.current?.value || "0"), statDecode: "Def"},
+        {base_stat: parseInt(refSpecialAttack.current?.value || "0"), statDecode: "Sp. Atk"},
+        {base_stat: parseInt(refSpecialDefense.current?.value || "0"), statDecode: "Sp. Def"},
+        {base_stat: parseInt(refSpeed.current?.value || "0"), statDecode: "Spd"}
+      ], 
       moves: [...refCheckedMoves.current], 
       sprites: { image }
     }
@@ -238,7 +257,42 @@ export default function PokemonForm(
             <label htmlFor="form">Form: </label>
             <input ref={refFormInput} id="form" type="text" name="form"/>
             <br /> 
-            
+
+            <h3>Stats</h3>
+            <div className="stats-container">
+              <div className="stat-container">
+                <label htmlFor="HP">HP: </label>
+                <input ref={refHP} name="HP" type="number" min="0" max="255" step="1" defaultValue="50"/>
+              </div>
+
+              <div className="stat-container">
+                <label htmlFor="Attack">Attack: </label>
+                <input ref={refAttack} name="Attack" type="number" min="0" max="255" step="1" defaultValue="50"/>
+              </div>
+
+              <div className="stat-container">
+                <label htmlFor="Defense">Defense: </label>
+                <input ref={refDefense} name="Defense" type="number" min="0" max="255" step="1" defaultValue="50"/>
+              </div>
+                
+              <div className="stat-container">
+                <label htmlFor="Sp.Atk">Special Attack: </label>
+                <input ref={refSpecialAttack} name="Sp.Atk" type="number" min="0" max="255" step="1" defaultValue="50"/>
+              </div>
+
+              <div className="stat-container">
+                <label htmlFor="Sp.Def">Special Defense: </label>
+                <input ref={refSpecialDefense} name="Sp.Def" type="number" min="0" max="255" step="1" defaultValue="50"/>
+              </div>
+
+              <div className="stat-container">
+                <label htmlFor="Speed">Speed: </label>
+                <input ref={refSpeed} name="Speed" type="number" min="0" max="255" step="1" defaultValue="50"/>
+              </div>
+            </div>
+
+            <br /> 
+
             <h3>Types: </h3>
             <div className="types-list">
               {typeCheckboxes}

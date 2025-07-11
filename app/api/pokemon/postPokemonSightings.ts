@@ -120,6 +120,7 @@ export default async function PostPokemonSighting(pokemonObject: Pokemon, fileTy
         pokemonType2: pokemonObject.type2,
         abilities: pokemonObject.abilities,
         moves: pokemonObject.moves, 
+        stats: pokemonObject.stats, 
         sprites: { image: blockBlobClient.url }
       });
 
