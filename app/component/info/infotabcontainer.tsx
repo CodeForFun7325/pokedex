@@ -48,18 +48,21 @@ export default function InfoTabContainer({pokemon, handleCloseInfo} : infoProps)
   return (
     <div className="info-tab-container">
       <span onClick={() => handleCloseInfo("")} className="close-btn">&times;</span>
-      <label htmlFor="form">Form: </label>
-      <select name="form" className="form-option" onChange={handleChange}>
-        {
-          formOptions.map((form) => {
-            return (
-              <option key={form} value={form}>
-                {form}
-              </option>
-            );
-          })
-        }
-      </select>
+      <div className="info-header">
+        <h2>{pokemon.toUpperCase()}</h2>
+        <label htmlFor="form">Form: </label>
+        <select name="form" className="form-option" onChange={handleChange}>
+          {
+            formOptions.map((form) => {
+              return (
+                <option key={form} value={form}>
+                  {form}
+                </option>
+              );
+            })
+          }
+        </select>
+      </div>
       {
         infoContainers.get(selectedForm)
       }

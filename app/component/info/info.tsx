@@ -24,7 +24,6 @@ export default function Info({pokemon} : infoProps)
     
     <div className="info-container">
       <div aria-label={`Images of ${pokemon.name}`} className="pokemon-attributes"> 
-        <h2>{pokemon?.name.toUpperCase()}</h2>
         <Link className="report-btn" href={`/report?pokemon=${pokemon?.name}&id=${pokemon?.id}`}>Report Sighting</Link>
         <br />
         <img className="info-image" src={pokemon?.sprites.image} alt={pokemon?.name} />
@@ -32,9 +31,6 @@ export default function Info({pokemon} : infoProps)
       </div>
 
       <div aria-label={`Information on ${pokemon?.name}`} className="pokemon-info">
-        
-        <br />
-
         <p><strong>Types: </strong>  {pokemon?.type1}{pokemon?.type2 == "" ? "" : ", "}{pokemon?.type2}</p>
         <br />
 
