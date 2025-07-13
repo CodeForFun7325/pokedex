@@ -25,34 +25,6 @@ resource "azurerm_resource_group" "pokedex" {
   }
 }
 
-### Uncomment the following blocks to create an Azure Service Plan and a Windows Web App
-
-# resource "azurerm_service_plan" "pokedex" {
-#   name                = "pokedex-service-plan"
-#   location            = azurerm_resource_group.pokedex.location
-#   resource_group_name = azurerm_resource_group.pokedex.name
-#   sku_name            = "D1"
-#   os_type             = "Windows"
-#   tags = {
-#     environment = "development"
-#     project     = "pokedex"
-#   }
-# }
-
-# resource "azurerm_windows_web_app" "pokedex" {
-#   name                = "pokedex-web-app"
-#   resource_group_name = azurerm_resource_group.pokedex.name
-#   location            = azurerm_resource_group.pokedex.location
-#   service_plan_id     = azurerm_service_plan.pokedex.id
-#   site_config {
-#     always_on = false
-#   }
-#   tags = {
-#     environment = "development"
-#     project     = "pokedex"
-#   }
-# }
-
 resource "azurerm_cosmosdb_account" "pokedex_db_account" {
   name                = "pokedex-db-account"
   resource_group_name = azurerm_resource_group.pokedex.name
