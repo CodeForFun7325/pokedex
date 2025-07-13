@@ -138,7 +138,7 @@ export default async function PostPokemonSighting(pokemonObject: Pokemon, fileTy
   } catch (error) {
 
     // TODO: Need to add better error handling here. Probably going to be based on status code
-    return { success: false, message: "There was an error uploading the data to the PokeDex" }
+    return { success: false, message: `There was an error uploading the data to the PokeDex: ${error}` }
 
   }
 }

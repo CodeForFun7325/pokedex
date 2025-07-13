@@ -1,6 +1,5 @@
 export default interface CardData { 
-  name: string; 
-  url: string;
+  name: string;
   imageSource: string;
   onClick: (url: string) => void; 
 }

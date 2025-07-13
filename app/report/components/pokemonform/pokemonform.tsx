@@ -2,7 +2,6 @@
 import React, { useState, useRef, JSX } from 'react'; 
 import { useSearchParams, useRouter } from 'next/navigation';
 
-
 import PostPokemonSighting from '@/app/api/pokemon/postPokemonSightings';
 import Pokemon from '@/app/entities/pokemon';
 import FormLoading from '../loading/formloading';
@@ -28,8 +27,8 @@ export default function PokemonForm(
   let pokemonName : string | null = searchParams.get('pokemon'); 
   pokemonName = pokemonName ? pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1) : ""; // Capitalize the first letter of the pokemon name
   
-  let pokemonIdString : string | null = searchParams.get('id');
-  let pokemonId : number = pokemonIdString ? parseInt(pokemonIdString) : 0; // Parse the pokemon ID from the search params
+  const pokemonIdString : string | null = searchParams.get('id');
+  const pokemonId : number = pokemonIdString ? parseInt(pokemonIdString) : 0; // Parse the pokemon ID from the search params
 
 
 
@@ -131,7 +130,7 @@ export default function PokemonForm(
 
     if (pArray && Array.isArray(pArray) && pArray.length > 0) { 
 
-      let arrFirstElement = pArray[0];
+      const arrFirstElement = pArray[0];
 
       // we are going to assume that all the variables in this 
       // array have the same type as the first element
@@ -153,9 +152,9 @@ export default function PokemonForm(
     return checkboxes;
   }
 
-  let typeCheckboxes = sortArrays("types", types, handleTypeCheck); 
-  let abilityCheckboxes = sortArrays("abilities", abilities, handleAbilityCheck); 
-  let movesCheckboxes = sortArrays("moves", moves, handleMovesCheck); 
+  const typeCheckboxes = sortArrays("types", types, handleTypeCheck); 
+  const abilityCheckboxes = sortArrays("abilities", abilities, handleAbilityCheck); 
+  const movesCheckboxes = sortArrays("moves", moves, handleMovesCheck); 
 
   
   /**

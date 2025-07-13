@@ -3,7 +3,7 @@ import React, { memo } from "react";
 import CardData from "../../entities/card";
 import "./card.css";
 
-function Card({name, url, imageSource, onClick} : CardData) {  
+function Card({name, imageSource, onClick} : CardData) {  
   return (
     <div onClick={() => onClick(name)} className="card"> 
       <img className="pokemon-image" src={imageSource} alt={name}/>

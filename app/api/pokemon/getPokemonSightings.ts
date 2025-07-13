@@ -23,7 +23,7 @@ export default async function GetPokemonSightings(pokemon: string) {
 async function GetPokedexData(pokemon: string) { 
   const P = new Pokedex(); 
   
-  let data = await P.getPokemonByName(pokemon); 
+  const data = await P.getPokemonByName(pokemon); 
 
   /** Stage: Parse out pokemon abilities */
   let pokemonAbilities : string[] = [];  
@@ -60,7 +60,7 @@ async function GetPokedexData(pokemon: string) {
   if (data && data.stats && Array.isArray(data.stats)) { 
 
     pokemonStats = data.stats.map((stat: unknown) => { 
-      let pokemonStat: Stats =  {
+      const pokemonStat: Stats =  {
         base_stat: 0,
         statDecode: ""
       }; 

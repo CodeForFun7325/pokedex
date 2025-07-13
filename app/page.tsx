@@ -5,19 +5,28 @@ import GlobalLoading from "@/app/component/loading/loading";
 
 import "./page.module.css";
 
+interface PageProps { 
+  searchParams: Promise<object>; 
+}
 
-export default async function Home({ searchParams }: { searchParams : { [key: string]: string | ""}}) {
+export default async function Home({ searchParams }: PageProps) {
 
   const searchObject = await searchParams; 
-  
-  const searchQuery = searchObject?.search || "";
-  
+
+  let search: string = ""; 
+
+  if (searchObject && searchObject instanceof Object
+    && "search" in searchObject 
+    && typeof searchObject.search === "string") { 
+      search = searchObject.search; 
+    }
+
   return (
     <>
       <h1>PokeDex</h1>
       <SearchBar />
       <Suspense fallback={<GlobalLoading />}>
-        <GalleryContainer search={searchQuery} />
+        <GalleryContainer search={search} />
       </Suspense>
     </>
   );

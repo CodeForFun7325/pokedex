@@ -1,7 +1,7 @@
 "use client"; 
 
 /// Component Imports
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import InfoTabContainer from "../info/infotabcontainer";
 
@@ -29,7 +29,6 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
     return (
       <Card key = {index}
             name={pokemon.name} 
-            url={pokemon.url} 
             imageSource={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`}
             onClick={handlePokemonSelect} />
     ); 

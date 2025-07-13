@@ -11,7 +11,7 @@ export default async function GalleryContainer({ search } : { search: string | "
    * At the time of development there were only 1025 pokemon in the national dex 
    * */
   const response = await P.getPokemonsList({ limit: 1025 });
-  var pokemons = response.results as PokemonListResponse[];
+  let pokemons = response.results as PokemonListResponse[];
 
   if (!pokemons || pokemons.length === 0) {
     return <div className="gallery"></div>;

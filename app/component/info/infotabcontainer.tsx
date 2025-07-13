@@ -24,9 +24,9 @@ export default function InfoTabContainer({pokemon, handleCloseInfo} : infoProps)
   useEffect(() => { 
     const fetchData = async () => { 
       setLoading(true); 
-      let pokemonData : Pokemon[] | undefined = await GetPokemonSightings(pokemon).then(res => res?.pokemonData); 
-      let infoElements:Map<string, JSX.Element> = new Map(); 
-      let forms:string[] = [];
+      const pokemonData : Pokemon[] | undefined = await GetPokemonSightings(pokemon).then(res => res?.pokemonData); 
+      const infoElements:Map<string, JSX.Element> = new Map(); 
+      const forms:string[] = [];
       
       pokemonData?.forEach(data  => { 
         forms.push(data?.form == "" ? "Base" : data.form);
