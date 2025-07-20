@@ -93,3 +93,12 @@ resource "azurerm_storage_container" "pokedex_container" {
   name               = "pokemon-images"
   storage_account_id = azurerm_storage_account.pokedex_storage.id
 }
+
+resource "azurerm_container_registry" "pokedex_registry" {
+  name                = "pokedexregistry7325"
+  resource_group_name = azurerm_resource_group.pokedex.name
+  location            = azurerm_resource_group.pokedex.location
+  sku                 = "Standard"
+  admin_enabled       = true
+}
+
