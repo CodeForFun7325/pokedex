@@ -10,6 +10,12 @@ This is a whimsical project inspired by the PokéDex, where users can "report si
 - Azure Storage Account (Store uploaded pokemon images)
 - Azure CosmosDB (Store uploaded pokemon data)
 
+### Retrieve Pokemon
+![Retrieve Pokemon Diagram](./public/RetrievePokemon.png)
+
+### Post Pokemon
+![Post Pokemon Diagram](./public/PostPokemon.png)
+
 ## Features
 
 ### Home Page
