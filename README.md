@@ -9,6 +9,7 @@ This is a whimsical project inspired by the PokéDex, where users can "report si
 - Azure Container Instance (Running the container for development/testing purposes)
 - Azure Storage Account (Store uploaded pokemon images)
 - Azure CosmosDB (Store uploaded pokemon data)
+- Azure Log Analytics (Store storage account, CosmosDB, and web app logs)
 
 ## Features
 
