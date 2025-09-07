@@ -27,6 +27,7 @@
   .pokemon-info {
     width: var(--image-size);
     line-height: 1.25rem;
+    margin-bottom: 2rem; 
   }
 
   .pokemon-attributes {

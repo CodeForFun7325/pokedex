@@ -70,25 +70,11 @@
 
 .stats-container {
   display: flex;
+  flex-direction: row; 
   flex-wrap: wrap;
-  justify-content: space-around;
 
-  width: 320px;
-  height: 320px;
-
-  @media (min-width: 480px) {
-    width: 360px;
-    height: 360px;
-  }
-
-  @media (min-width: 576px) {
-    width: 450px;
-    height: 450px;
-  }
-
-  @media (min-width: 768px) {
-    width: 500px;
-    height: 500px;
+  .stat-container { 
+    margin: 0.5rem; 
   }
 }
 
