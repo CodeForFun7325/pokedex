@@ -11,6 +11,11 @@ This is a whimsical project inspired by the PokéDex, where users can "report si
 - Azure CosmosDB (Store uploaded pokemon data)
 - Azure Log Analytics (Store storage account, CosmosDB, and web app logs)
 
+## Setup
+1. Run Terraform script to deploy azure resources
+2. Give Storage Blob Data Reader and Storage Blob Data Contributor role to managed identity
+3. Give CosmosDB data plane access to managed identity
+
 ### Retrieve Pokemon
 ![Retrieve Pokemon Diagram](./public/RetrievePokemon.png)
 
