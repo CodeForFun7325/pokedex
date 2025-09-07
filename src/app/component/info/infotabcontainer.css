@@ -1,49 +1,56 @@
-.info-tab-container { 
+:root {
+  --bg-color: black;
+  --text-color: white;
+  --border-color: #141414;
+  --border-width: 2px;
+  --padding: 2rem;
+  --opacity: 0.98;
+}
+
+.info-tab-container {
   position: fixed;
-  background-color: black;
-  left: 50%; 
-  top: 50%;   
+  background-color: var(--bg-color);
+  left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
-  width: 90%; 
-  height: 90%; 
-  z-index: 100000; 
-  display: block; 
-  opacity: 0.98;
-  border: 2px solid #141414;
-  padding: 2rem; 
+  width: 90%;
+  height: 90%;
+  z-index: 100000;
+  display: block;
+  opacity: var(--opacity);
+  border: var(--border-width) solid var(--border-color);
+  padding: var(--padding);
   overflow-y: scroll;
-}
 
-.close-btn { 
-  position: absolute; 
-  font-size: 2rem; 
-  right: 10px; 
-  top: 0; 
-  cursor: default; 
-}
+  .close-btn {
+    position: absolute;
+    font-size: 2rem;
+    right: 10px;
+    top: 0;
+    cursor: default;
+  }
 
-.form-option { 
-  height: 2rem; 
-}
+  .form-option {
+    height: 2rem;
+  }
 
-.info-header { 
-  min-width: 200px; 
-  max-width: 350px; 
-  display: flex; 
-  flex-direction: column; 
-  margin-left: auto; 
-  margin-right: auto; 
-  margin-bottom: 3rem; 
-}
+  .info-header {
+    min-width: 200px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto 3rem auto;
+  }
 
-.report-btn { 
-  font: inherit; 
-  padding: 0rem 0.25rem; 
-  border: 2px solid white; 
-  background-color: black;
-}
+  .report-btn {
+    font: inherit;
+    padding: 0 0.25rem;
+    border: var(--border-width) solid var(--text-color);
+    background-color: var(--bg-color);
 
-.report-btn:hover { 
-  background-color: white; 
-  color: black; 
+    &:hover {
+      background-color: var(--text-color);
+      color: var(--bg-color);
+    }
+  }
 }

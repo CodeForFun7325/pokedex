@@ -2,11 +2,11 @@
 import { SqlQuerySpec } from "@azure/cosmos";
 import { BlobServiceClient, ContainerClient, ContainerSASPermissions, generateBlobSASQueryParameters, SASProtocol, BlobSASSignatureValues } from "@azure/storage-blob";
 import { DefaultAzureCredential } from "@azure/identity";
-import { FetchDatabaseContainer } from "@/app/util/cosmosdb";
+import { FetchDatabaseContainer } from "@/src/app/util/cosmosdb";
 
 import * as dotenv from "dotenv";
 
-import Pokemon from "@/app/entities/pokemon";
+import Pokemon from "@/src/app/entities/pokemon";
 
 async function InitializeBlobContainerClients(): Promise<ContainerClient> {
 
