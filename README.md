@@ -10,6 +10,8 @@ This is a whimsical project inspired by the PokéDex, where users can "report si
 - Azure Storage Account (Store uploaded pokemon images)
 - Azure CosmosDB (Store uploaded pokemon data)
 - Azure Log Analytics (Store storage account, CosmosDB, and web app logs)
+- Azure Functions
+- Azure Authentication
 
 ## Setup
 1. Run Terraform script to deploy azure resources
@@ -51,3 +53,10 @@ This is a whimsical project inspired by the PokéDex, where users can "report si
 - Along with uploading their design, the user will be able to choose a name, type combination, ability, stat, and move set for their pokemon
 - After successfully submitting their design, the user can see their design by navigating back to the home screen, and selecting the pokemon they uploaded a sighting for
 - The image is stored in an Azure storage account and the form name, stats, types, abilities, and moves are stored in an Azure CosmosDB account
+
+### Upcoming: 
+- Azure authentication: 
+    - Allow users to sign in with their microsoft accounts
+    - Keep track of what pokemons are uploaded by what users and allow them to quickly see their own posts
+- Azure function: 
+    - Notify users when a new pokemon sighting has been uploaded
