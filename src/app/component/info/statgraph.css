@@ -1,18 +1,16 @@
 :root {
-  --stats-size-sm: 320px;
-  --stats-size-xs: 360px;
+  --stats-size-xs: 300px;
+  --stats-size-sm: 360px;
   --stats-size-md: 450px;
   --stats-size-lg: 500px;
+
+  --custom-tooltip-background: #000;
+  --custom-tooltip-border-color: #fff; 
 }
 
 .stats-container {
-  width: var(--stats-size-sm);
-  height: var(--stats-size-sm);
-
-  @media (min-width: 480px) {
-    width: var(--stats-size-xs);
-    height: var(--stats-size-xs);
-  }
+  width: var(--stats-size-xs);
+  height: var(--stats-size-xs);
 
   @media (min-width: 576px) {
     width: var(--stats-size-md);
@@ -23,4 +21,25 @@
     width: var(--stats-size-lg);
     height: var(--stats-size-lg);
   }
+
+  @media (min-width: 992px) { 
+    width: var(--stats-size-xs); 
+    height: var(--stats-size-xs); 
+  }
+
+  @media (min-width: 1200px) { 
+    width: var(--stats-size-sm); 
+    height: var(--stats-size-sm); 
+  }
+
+    @media (min-width: 1400px) { 
+    width: var(--stats-size-lg); 
+    height: var(--stats-size-lg); 
+  }
+}
+
+.custom-tooltip { 
+  background-color: var(--custom-tooltip-background); 
+  padding: 1rem; 
+  border: 2px solid var(--custom-tooltip-border-color);
 }
