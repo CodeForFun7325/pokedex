@@ -1,8 +1,8 @@
 // Compponents
 import GlobalLoading from "../component/loading/loading";
 
-export default function ReportLoading() { 
-  return (
-    <GlobalLoading />
-  );
+export default function ReportLoading() {
+    return (
+        <GlobalLoading />
+    );
 }

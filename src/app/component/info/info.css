@@ -1,75 +1,76 @@
 /* Variables */
 :root {
-  --bg-color: black;
-  --text-color: white;
-  --hover-bg: white;
-  --hover-text: black;
-  --border-width: 2px;
-  --image-size: 250px;
-  --image-size-lg: 300px;
+    --bg-color: black;
+    --text-color: white;
+    --hover-bg: white;
+    --hover-text: black;
+    --border-width: 2px;
+    --image-size: 250px;
+    --image-size-lg: 300px;
 }
 
 /* Layout Container */
 .info-container {
-  background-color: var(--bg-color);
-  width: 90%;
-  height: 90%;
-  opacity: 0.98;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-
-  h2 {
-    margin-bottom: 1rem;
-  }
-
-  .pokemon-info {
-    width: var(--image-size);
-    line-height: 1.25rem;
-    margin-bottom: 2rem; 
-  }
-
-  .pokemon-attributes {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .info-image {
-    width: var(--image-size);
-    height: var(--image-size);
-    object-position: center;
-    object-fit: cover;
-  }
-
-  .report-btn {
-    font: inherit;
-    padding: 0 0.25rem;
-    border: var(--border-width) solid var(--text-color);
     background-color: var(--bg-color);
+    width: 90%;
+    height: 90%;
+    opacity: 0.98;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 
-    &:hover {
-      background-color: var(--hover-bg);
-      color: var(--hover-text);
+    h2 {
+        margin-bottom: 1rem;
     }
-  }
 
-  .abilities,
-  .moves {
-    list-style: inside;
-  }
+    .pokemon-info {
+        width: var(--image-size);
+        line-height: 1.25rem;
+        margin-bottom: 2rem;
+    }
 
-  @media (min-width: 992px) {
-    .pokemon-info,
     .pokemon-attributes {
-      width: 50%;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
     }
 
     .info-image {
-      width: var(--image-size-lg);
-      height: var(--image-size-lg);
+        width: var(--image-size);
+        height: var(--image-size);
+        object-position: center;
+        object-fit: cover;
     }
-  }
+
+    .report-btn {
+        font: inherit;
+        padding: 0 0.25rem;
+        border: var(--border-width) solid var(--text-color);
+        background-color: var(--bg-color);
+
+        &:hover {
+            background-color: var(--hover-bg);
+            color: var(--hover-text);
+        }
+    }
+
+    .abilities,
+    .moves {
+        list-style: inside;
+    }
+
+    @media (min-width: 992px) {
+
+        .pokemon-info,
+        .pokemon-attributes {
+            width: 50%;
+        }
+
+        .info-image {
+            width: var(--image-size-lg);
+            height: var(--image-size-lg);
+        }
+    }
 }

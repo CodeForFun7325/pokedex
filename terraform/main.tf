@@ -1,104 +1,104 @@
 terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>4.0"
+    required_providers {
+      azurerm = {
+        source  = "hashicorp/azurerm"
+        version = "~>4.0"
+      }
+      random = {
+        source  = "hashicorp/random"
+        version = "~>3.0"
+      }
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "~>3.0"
-    }
-  }
 }
 
 provider "azurerm" {
-  features {}
-  subscription_id = "a3ef7895-e7c0-40ec-809a-95edae2a391b" # Replace with your Azure subscription ID
+    features {}
+    subscription_id = "a3ef7895-e7c0-40ec-809a-95edae2a391b" # Replace with your Azure subscription ID
 }
 
 resource "azurerm_resource_group" "pokedex" {
-  name     = "pokedex-rg"
-  location = "WEST US 2"
-  tags = {
-    environment = "development"
-    project     = "pokedex"
-  }
+    name     = "pokedex-rg"
+    location = "WEST US 2"
+    tags = {
+      environment = "development"
+      project     = "pokedex"
+    }
 }
 
 resource "azurerm_cosmosdb_account" "pokedex_db_account" {
-  name                = "pokedex-db-account"
-  resource_group_name = azurerm_resource_group.pokedex.name
-  location            = azurerm_resource_group.pokedex.location
-  offer_type          = "Standard"
-  kind                = "GlobalDocumentDB"
+    name                = "pokedex-db-account"
+    resource_group_name = azurerm_resource_group.pokedex.name
+    location            = azurerm_resource_group.pokedex.location
+    offer_type          = "Standard"
+    kind                = "GlobalDocumentDB"
 
-  local_authentication_disabled = true
+    local_authentication_disabled = true
 
-  consistency_policy {
-    consistency_level = "Eventual"
-  }
+    consistency_policy {
+      consistency_level = "Eventual"
+    }
 
-  geo_location {
-    location          = "WEST US"
-    failover_priority = 0
-  }
+    geo_location {
+      location          = "WEST US"
+      failover_priority = 0
+    }
 }
 
 resource "azurerm_cosmosdb_sql_database" "pokedex_db" {
-  name                = "pokedex-db"
-  resource_group_name = azurerm_cosmosdb_account.pokedex_db_account.resource_group_name
-  account_name        = azurerm_cosmosdb_account.pokedex_db_account.name
-  throughput          = 400
+    name                = "pokedex-db"
+    resource_group_name = azurerm_cosmosdb_account.pokedex_db_account.resource_group_name
+    account_name        = azurerm_cosmosdb_account.pokedex_db_account.name
+    throughput          = 400
 }
 
 resource "azurerm_cosmosdb_sql_container" "pokemon_sightings" {
-  name                  = "Sightings"
-  resource_group_name   = azurerm_cosmosdb_account.pokedex_db_account.resource_group_name
-  account_name          = azurerm_cosmosdb_account.pokedex_db_account.name
-  database_name         = azurerm_cosmosdb_sql_database.pokedex_db.name
-  partition_key_paths   = ["/pokemonName", "/pokemonForm"]
-  partition_key_kind    = "MultiHash"
-  partition_key_version = 2
+    name                  = "Sightings"
+    resource_group_name   = azurerm_cosmosdb_account.pokedex_db_account.resource_group_name
+    account_name          = azurerm_cosmosdb_account.pokedex_db_account.name
+    database_name         = azurerm_cosmosdb_sql_database.pokedex_db.name
+    partition_key_paths   = ["/pokemonName", "/pokemonForm"]
+    partition_key_kind    = "MultiHash"
+    partition_key_version = 2
 
-  indexing_policy {
-    indexing_mode = "consistent"
+    indexing_policy {
+      indexing_mode = "consistent"
 
-    included_path {
-      path = "/*"
+      included_path {
+        path = "/*"
+      }
+
+      excluded_path {
+        path = "/\"_etag\"/?"
+      }
+
     }
 
-    excluded_path {
-      path = "/\"_etag\"/?"
-    }
-
-  }
-
-  throughput = 400
+    throughput = 400
 }
 
 resource "azurerm_storage_account" "pokedex_storage" {
-  name                     = "pokestorageaccount7325"
-  resource_group_name      = azurerm_resource_group.pokedex.name
-  location                 = azurerm_resource_group.pokedex.location
-  account_tier             = "Standard"
-  account_replication_type = "ZRS"
+    name                     = "pokestorageaccount7325"
+    resource_group_name      = azurerm_resource_group.pokedex.name
+    location                 = azurerm_resource_group.pokedex.location
+    account_tier             = "Standard"
+    account_replication_type = "ZRS"
 
-  tags = {
-    environment = "development"
-    project     = "pokedex"
-  }
+    tags = {
+      environment = "development"
+      project     = "pokedex"
+    }
 }
 
 resource "azurerm_storage_container" "pokedex_container" {
-  name               = "pokemon-images"
-  storage_account_id = azurerm_storage_account.pokedex_storage.id
+    name               = "pokemon-images"
+    storage_account_id = azurerm_storage_account.pokedex_storage.id
 }
 
 resource "azurerm_container_registry" "pokedex_registry" {
-  name                = "pokedexregistry7325"
-  resource_group_name = azurerm_resource_group.pokedex.name
-  location            = azurerm_resource_group.pokedex.location
-  sku                 = "Standard"
-  admin_enabled       = true
+    name                = "pokedexregistry7325"
+    resource_group_name = azurerm_resource_group.pokedex.name
+    location            = azurerm_resource_group.pokedex.location
+    sku                 = "Standard"
+    admin_enabled       = true
 }
 

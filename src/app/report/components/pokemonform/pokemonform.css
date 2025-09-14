@@ -1,200 +1,202 @@
 :root {
-  --bg-color: black;
-  --text-color: white;
-  --border-color: #141414;
-  --border-width: 2px;
-  --padding: 2rem;
-  --opacity: 0.98;
-  --search-width: 250px;
-  --search-height: 35px;
-  --search-radius: 5px;
-  --search-container-width: 225px;
-  --search-container-height: 45px;
-  --search-container-padding: 0.5rem;
-  --search-container-margin-top: 1rem;
-  --image-preview-width: 300px;
-  --image-preview-margin-top: 20px;
-  --image-preview-margin-bottom: 20px;
-  --form-padding: 2rem;
-  --form-width: 30vw;
-  --form-height: 80vh;
-} 
+    --bg-color: black;
+    --text-color: white;
+    --border-color: #141414;
+    --border-width: 2px;
+    --padding: 2rem;
+    --opacity: 0.98;
+    --search-width: 250px;
+    --search-height: 35px;
+    --search-radius: 5px;
+    --search-container-width: 225px;
+    --search-container-height: 45px;
+    --search-container-padding: 0.5rem;
+    --search-container-margin-top: 1rem;
+    --image-preview-width: 300px;
+    --image-preview-margin-top: 20px;
+    --image-preview-margin-bottom: 20px;
+    --form-padding: 2rem;
+    --form-width: 30vw;
+    --form-height: 80vh;
+}
 
 .info-tab-container {
-  position: fixed;
-  background-color: var(--bg-color);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  height: 90%;
-  z-index: 100000;
-  display: block;
-  opacity: var(--opacity);
-  border: var(--border-width) solid var(--border-color);
-  padding: var(--padding);
-  overflow-y: scroll;
-
-  .close-btn {
-    position: absolute;
-    font-size: 2rem;
-    right: 10px;
-    top: 0;
-    cursor: default;
-  }
-
-  .form-option {
-    height: 2rem;
-  }
-
-  .info-header {
-    min-width: 200px;
-    max-width: 350px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto 3rem auto;
-  }
-
-  .report-btn {
-    font: inherit;
-    padding: 0 0.25rem;
-    border: var(--border-width) solid var(--text-color);
+    position: fixed;
     background-color: var(--bg-color);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+    z-index: 100000;
+    display: block;
+    opacity: var(--opacity);
+    border: var(--border-width) solid var(--border-color);
+    padding: var(--padding);
+    overflow-y: scroll;
 
-    &:hover {
-      background-color: var(--text-color);
-      color: var(--bg-color);
+    .close-btn {
+        position: absolute;
+        font-size: 2rem;
+        right: 10px;
+        top: 0;
+        cursor: default;
     }
-  }
+
+    .form-option {
+        height: 2rem;
+    }
+
+    .info-header {
+        min-width: 200px;
+        max-width: 350px;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto 3rem auto;
+    }
+
+    .report-btn {
+        font: inherit;
+        padding: 0 0.25rem;
+        border: var(--border-width) solid var(--text-color);
+        background-color: var(--bg-color);
+
+        &:hover {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+    }
 }
 
 .stats-container {
-  display: flex;
-  flex-direction: row; 
-  flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 
-  .stat-container { 
-    margin: 0.5rem; 
-  }
+    .stat-container {
+        margin: 0.5rem;
+    }
 }
 
 .search-bar {
-  text-align: center;
-  width: var(--search-width);
-  height: var(--search-height);
-  border-radius: var(--search-radius);
+    text-align: center;
+    width: var(--search-width);
+    height: var(--search-height);
+    border-radius: var(--search-radius);
 }
 
 .search-bar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: var(--border-width) solid var(--text-color);
-  padding: var(--search-container-padding);
-  width: var(--search-container-width);
-  height: var(--search-container-height);
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: var(--search-container-margin-top);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: var(--border-width) solid var(--text-color);
+    padding: var(--search-container-padding);
+    width: var(--search-container-width);
+    height: var(--search-container-height);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: var(--search-container-margin-top);
 }
 
 .report-form {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .image-upload-section,
 .pokemon-details-section {
-  width: 100%;
-  margin: 2rem 0;
+    width: 100%;
+    margin: 2rem 0;
 }
 
 .image-upload-form,
 .pokemon-details-form {
-  width: 300px;
-  margin: 0 auto;
+    width: 300px;
+    margin: 0 auto;
 }
 
 #image-preview {
-  width: 100%;
+    width: 100%;
 }
 
-.pokemon-details-form > input,
-.pokemon-details > label {
-  margin-bottom: 1rem;
+.pokemon-details-form>input,
+.pokemon-details>label {
+    margin-bottom: 1rem;
 }
 
 .checkbox-container {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .checkbox-label {
-  margin-left: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .checkbox {
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
 
 .types-list,
 .moves-list,
 .abilities-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 0.5rem 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0.5rem 0;
 }
 
 .types-option,
 .moves-option,
 .abilities-option {
-  margin: 0.2rem 0;
+    margin: 0.2rem 0;
 }
 
 .types-option {
-  width: 50%;
+    width: 50%;
 }
 
 .moves-option,
 .abilities-option {
-  width: 100%;
+    width: 100%;
 }
 
 .upload-button {
-  background-color: black;
-  margin: 1rem auto;
-  display: block;
-  font-size: 1rem;
-  padding: 0.5rem;
+    background-color: black;
+    margin: 1rem auto;
+    display: block;
+    font-size: 1rem;
+    padding: 0.5rem;
 }
 
 @media (min-width: 992px) {
-  .image-upload-section,
-  .pokemon-details-section {
-    width: 50%;
-  }
 
-  .image-upload-form,
-  .pokemon-details-form {
-    width: 80%;
-  }
+    .image-upload-section,
+    .pokemon-details-section {
+        width: 50%;
+    }
 
-  .types-option {
-    width: 33%;
-  }
+    .image-upload-form,
+    .pokemon-details-form {
+        width: 80%;
+    }
 
-  .pokemon-details-form {
-    overflow-y: scroll;
-    height: 80vh;
-  }
+    .types-option {
+        width: 33%;
+    }
+
+    .pokemon-details-form {
+        overflow-y: scroll;
+        height: 80vh;
+    }
 }
 
 @media (min-width: 1500px) {
-  .moves-option,
-  .abilities-option {
-    width: 50%;
-  }
+
+    .moves-option,
+    .abilities-option {
+        width: 50%;
+    }
 }
