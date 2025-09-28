@@ -5,6 +5,7 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import InfoTabContainer from "@/src/app/component/info/infotabcontainer";
 import Card from '@/src/app/component/card/card';
+import Entry from '@/src/app/component/entry/entry';
 
 // Hooks
 import usePokemonSelect from '@/src/app/hooks/usePokemonSelect';
@@ -34,13 +35,25 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
         );
     });
 
+    const PokemonEntries = pokemons.map((pokemon) => { 
+        const urlComponent = pokemon.url.split("/")
+        const index = urlComponent[urlComponent.length - 2] 
+        
+        return (
+            <Entry key={index} 
+                name={pokemon.name}
+                imageSource={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`}
+                onClick={handlePokemonSelect} /> 
+        )
+    })
+
     /** Stage: Render the list of card components
      * If the user has clicked a pokemon card, we will also render the info component
      * This info component will retrieve the pokemon data from the PokeAPI and display it
      */
     return (
         <div className="gallery">
-            {PokemonCards}
+            {PokemonEntries}
             <QueryClientProvider client={queryClient}>
                 {
                     showInfo &&

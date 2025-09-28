@@ -26,8 +26,11 @@ export default async function Home({ searchParams }: PageProps) {
 
     return (
         <>
-            <h1>PokeDex</h1>
-            <SearchBar />
+            <div className="page-header"> 
+                <h1>PokeDex</h1>
+                <SearchBar />
+            </div>
+
             <Suspense fallback={<GlobalLoading />}>
                 <GalleryContainer search={search} />
             </Suspense>

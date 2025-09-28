@@ -21,7 +21,7 @@
     width: var(--search-container-width);
     height: var(--search-container-height);
     margin: var(--search-container-margin-top) auto 0 auto;
-
+    
     .search-bar {
         text-align: center;
         width: var(--search-bar-width);

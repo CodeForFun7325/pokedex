@@ -1,8 +1,8 @@
 .gallery {
     display: flex;
-    justify-content: center;
+    align-items: flex-end;
     width: 100%;
     padding: 3rem 0;
-    flex-wrap: wrap;
+    flex-direction: column;
     margin: 0;
 }
