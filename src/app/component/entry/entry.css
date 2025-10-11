@@ -1,0 +1,26 @@
+:root { 
+    --bg-color: #242322;
+    --border: #fff;  
+}
+
+.entry { 
+    display: flex; 
+    flex-direction: row; 
+    justify-content: flex-start;
+    align-items: center; 
+    width: 90%; 
+    margin: 0.25rem 0; 
+    background-color: var(--bg-color);  
+    opacity: 0.90;
+    border-top: 2px solid var(--border); 
+    border-left: 2px solid var(--border); 
+    border-bottom: 2px solid var(--border); 
+
+    .pokemon-image { 
+        width: 125px; 
+        height: 125px; 
+        object-fit: cover; 
+        object-position: center; 
+    }
+}
+
