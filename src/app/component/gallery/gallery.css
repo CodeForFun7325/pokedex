@@ -2,7 +2,29 @@
     display: flex;
     align-items: flex-end;
     width: 100%;
-    padding: 3rem 0;
+    height: 70vh;
     flex-direction: column;
-    margin: 0;
+    margin-top: 2rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.gallery::-webkit-scrollbar {
+    width: 1px;
+}
+
+.gallery::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.gallery::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+
+.gallery::before,
+.gallery::after {
+    content: "";
+    flex: 0 0 35vh;
+    /* Half of container height */
 }

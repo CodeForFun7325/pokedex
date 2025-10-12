@@ -97,8 +97,8 @@ a.secondary {
     flex-shrink: 0;
 }
 
-.page-header { 
-    position: sticky;
+.page-header {
+    height: 120px;
 }
 
 /* Enable hover only on non-touch devices */

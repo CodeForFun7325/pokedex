@@ -23,27 +23,15 @@ export default function Gallery({ pokemons }: { pokemons: PokemonListResponse[] 
     const { selectedPokemon, showInfo, handlePokemonSelect } = usePokemonSelect();
 
     /** Stage: Map the list of pokemons into card components */
-    const PokemonCards = pokemons.map((pokemon) => {
-        const urlComponent = pokemon.url.split("/");
-        const index = urlComponent[urlComponent.length - 2];
+    const PokemonEntries = pokemons.map((pokemon) => {
+        const urlComponent = pokemon.url.split("/")
+        const index = urlComponent[urlComponent.length - 2]
 
         return (
-            <Card key={index}
+            <Entry key={index}
                 name={pokemon.name}
                 imageSource={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`}
                 onClick={handlePokemonSelect} />
-        );
-    });
-
-    const PokemonEntries = pokemons.map((pokemon) => { 
-        const urlComponent = pokemon.url.split("/")
-        const index = urlComponent[urlComponent.length - 2] 
-        
-        return (
-            <Entry key={index} 
-                name={pokemon.name}
-                imageSource={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`}
-                onClick={handlePokemonSelect} /> 
         )
     })
 
